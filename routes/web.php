@@ -31,7 +31,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
 // CRUD BOOK
 // Route::get('/books', [BookController::class, 'index'])->name('books.index');
-Route::resource('books', BookController::class);
+// Route::resource('books', BookController::class);
 
 // Profile route (semua user bisa edit profilnya)
 Route::middleware('auth')->group(function () {

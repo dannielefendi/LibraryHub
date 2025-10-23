@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Middleware;
 
 use Closure;
@@ -8,12 +7,14 @@ use Illuminate\Support\Facades\Auth;
 
 class AdminMiddleware
 {
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next): mixed
     {
+        // Check if user is authenticated and is an admin
         if (Auth::check() && Auth::user()->role === 'admin') {
             return $next($request);
         }
 
+        // If not admin, abort with 403
         abort(403, 'Anda tidak memiliki akses sebagai admin.');
     }
 }
