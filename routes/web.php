@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\BorrowingController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,9 +16,9 @@ Route::get('/dashboard', function () {
     if ($user->role === 'admin') {
         // Admin diarahkan ke halaman Books
         return redirect()->route('books.index');
-    } elseif ($user->role === 'mahasiswa') {
-        // Mahasiswa diarahkan ke halaman dashboard mahasiswa
-        return view('student.dashboard'); // pastikan file view-nya ada: resources/views/student/dashboard.blade.php
+    } elseif ($user->role === 'user') {
+        // User diarahkan ke halaman dashboard user
+        return redirect()->route('user.dashboard'); // pastikan file view-nya ada: resources/views/user/dashboard.blade.php
     }
 
     // Default fallback (jika role tidak dikenali)
@@ -29,9 +30,13 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::resource('books', BookController::class);
 });
 
-// CRUD BOOK
-// Route::get('/books', [BookController::class, 'index'])->name('books.index');
-// Route::resource('books', BookController::class);
+// dashboard user
+Route::middleware(['auth', 'user'])->group(function () {
+    Route::get('/user/dashboard', [BorrowingController::class, 'index'])->name('user.dashboard');
+    Route::post('/user/borrow', [BorrowingController::class, 'store'])->name('user.borrow');
+    Route::get('/user/my-borrowings', [BorrowingController::class, 'showUserBorrowings'])->name('user.borrowings');
+});
+
 
 // Profile route (semua user bisa edit profilnya)
 Route::middleware('auth')->group(function () {

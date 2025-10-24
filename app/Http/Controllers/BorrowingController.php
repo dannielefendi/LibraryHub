@@ -2,64 +2,50 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Book;
 use App\Models\Borrowing;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class BorrowingController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // Daftar semua buku yang bisa dipinjam
     public function index()
     {
-        //
+        $books = Book::where('stock', '>', 0)->with('category')->get();
+        return view('user.dashboard', compact('books'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
+    // Simpan peminjaman
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'book_id' => 'required|exists:books,id',
+        ]);
+
+        $book = Book::findOrFail($request->book_id);
+
+        if ($book->stock <= 0) {
+            return back()->with('error', 'Stok buku habis!');
+        }
+
+        Borrowing::create([
+            'user_id' => Auth::id(),
+            'book_id' => $book->id,
+            'borrow_date' => now(),
+            'status' => 'Dipinjam',
+        ]);
+
+        // Kurangi stok buku
+        $book->decrement('stock');
+
+        return back()->with('success', 'Buku berhasil dipinjam!');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Borrowing $borrowing)
+    // Menampilkan daftar buku yang sedang user pinjam
+    public function showUserBorrowings()
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Borrowing $borrowing)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Borrowing $borrowing)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Borrowing $borrowing)
-    {
-        //
+        $borrowings = Borrowing::where('user_id', Auth::id())->with('book')->get();
+        return view('user.borrowings', compact('borrowings'));
     }
 }
