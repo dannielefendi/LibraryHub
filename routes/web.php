@@ -30,11 +30,22 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::resource('books', BookController::class);
 });
 
+
+
+
 // dashboard user
 Route::middleware(['auth', 'user'])->group(function () {
     Route::get('/user/dashboard', [BorrowingController::class, 'index'])->name('user.dashboard');
     Route::post('/user/borrow', [BorrowingController::class, 'store'])->name('user.borrow');
     Route::get('/user/my-borrowings', [BorrowingController::class, 'showUserBorrowings'])->name('user.borrowings');
+});
+
+// Borrow approval system (hanya admin )
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin/borrowings', [BorrowingController::class, 'adminIndex'])->name('admin.borrowings');
+    Route::post('/admin/borrowings/{id}/approve', [BorrowingController::class, 'approve'])->name('admin.borrowings.approve');
+    Route::post('/admin/borrowings/{id}/reject', [BorrowingController::class, 'reject'])->name('admin.borrowings.reject');
+    Route::post('/admin/borrowings/{id}/returned', [BorrowingController::class, 'markReturned'])->name('admin.borrowings.returned');
 });
 
 

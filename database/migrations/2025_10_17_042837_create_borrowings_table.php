@@ -13,11 +13,25 @@ return new class extends Migration
     {
         Schema::create('borrowings', function (Blueprint $table) {
             $table->id();
+
+            // Relasi ke user dan book
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('book_id')->constrained()->onDelete('cascade');
-            $table->date('borrow_date');
+
+            // Tanggal peminjaman dan pengembalian
+            $table->date('borrow_date')->nullable();
             $table->date('return_date')->nullable();
-            $table->enum('status', ['Dipinjam', 'Dikembalikan'])->default('Dipinjam');
+
+            // Status peminjaman
+            // Pending = menunggu approval admin
+            // Dipinjam = sudah disetujui admin
+            // Dikembalikan = buku sudah dikembalikan
+            // Ditolak = permintaan peminjaman ditolak admin
+            $table->enum('status', ['Pending', 'Borrowed', 'Returned', 'Rejected'])->default('Pending');
+
+            // Kolom tambahan opsional untuk catatan admin
+            $table->text('admin_note')->nullable();
+
             $table->timestamps();
         });
     }

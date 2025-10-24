@@ -1,14 +1,24 @@
 <x-app-layout>
-    {{-- Slot Header --}}
     <x-slot name="header">
         <div class="flex justify-between items-center">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('Book List') }}
             </h2>
 
-            <button onclick="window.location.href='{{ route('books.create') }}'" class="btn btn-primary">
-                Add New Book
-            </button>
+            <div class="flex gap-2">
+                <button
+                    onclick="window.location.href='{{ route('books.create') }}'"
+                    class="btn btn-primary">
+                    {{-- class="btn btn-success" --}}
+                    Add New Book
+                </button>
+
+                <button
+                    onclick="window.location.href='{{ route('admin.borrowings') }}'"
+                    class="btn btn-outline-secondary">
+                    Manage Borrowings
+                </button>
+            </div>
         </div>
     </x-slot>
 

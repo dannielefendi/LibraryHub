@@ -1,12 +1,12 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Daftar Buku') }}
+            {{ __('Book List') }}
         </h2>
     </x-slot>
 
     <div class="py-8">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-4">
 
             @if (session('success'))
                 <div class="mb-4 p-4 bg-green-100 text-green-700 rounded">
@@ -18,19 +18,19 @@
                 </div>
             @endif
 
-            <div class="flex justify-center py-12">
+            <div class="flex justify-center">
                 <div class="w-full max-w-5xl bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900">
 
                         <table class="w-full border border-gray-200">
                             <thead class="bg-gray-100">
                                 <tr>
-                                    <th class="border px-4 py-2 text-left">Judul</th>
-                                    <th class="border px-4 py-2 text-left">Penulis</th>
-                                    <th class="border px-4 py-2 text-left">Tahun</th>
-                                    <th class="border px-4 py-2 text-center">Stok</th>
-                                    <th class="border px-4 py-2 text-left">Kategori</th>
-                                    <th class="border px-4 py-2 text-center">Aksi</th>
+                                    <th class="border px-4 py-2 text-left">Title</th>
+                                    <th class="border px-4 py-2 text-left">Author</th>
+                                    <th class="border px-4 py-2 text-left">Year</th>
+                                    <th class="border px-4 py-2 text-center">Stock</th>
+                                    <th class="border px-4 py-2 text-left">Category</th>
+                                    <th class="border px-4 py-2 text-center">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -46,7 +46,7 @@
                                                 @csrf
                                                 <input type="hidden" name="book_id" value="{{ $book->id }}">
                                                 <x-primary-button>
-                                                    {{ __('Pinjam') }}
+                                                    {{ __('Borrow') }}
                                                 </x-primary-button>
                                             </form>
                                         </td>
@@ -58,7 +58,7 @@
                         <div class="mt-6 text-center">
                             <a href="{{ route('user.borrowings') }}">
                                 <x-secondary-button>
-                                    {{ __('Lihat Buku yang Dipinjam') }}
+                                    {{ __('View Borrowed Books') }}
                                 </x-secondary-button>
                             </a>
                         </div>

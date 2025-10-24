@@ -14,8 +14,8 @@
                     <table class="w-full border border-gray-200">
                         <thead class="bg-gray-100">
                             <tr>
-                                <th class="border px-4 py-2 text-left">Judul Buku</th>
-                                <th class="border px-4 py-2 text-left">Tanggal Pinjam</th>
+                                <th class="border px-4 py-2 text-left">Title</th>
+                                <th class="border px-4 py-2 text-left">Borrow Date</th>
                                 <th class="border px-4 py-2 text-left">Status</th>
                             </tr>
                         </thead>
@@ -33,7 +33,7 @@
                     <div class="mt-6">
                         <a href="{{ route('user.dashboard') }}">
                             <x-secondary-button>
-                                {{ __('Kembali ke Dashboard') }}
+                                {{ __('Back to Dashboard') }}
                             </x-secondary-button>
                         </a>
                     </div>
