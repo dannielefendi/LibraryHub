@@ -8,12 +8,12 @@ It allows users to browse available books, borrow and return them, while adminis
 ## 🚀 Features
 
 ### 👤 User
-- View available books with their categories  
+- View available books
 - Borrow and return books  
 - View personal borrowing history
 
 ### 🛠️ Admin
-- Manage books and categories  
+- Manage CRUD books 
 - Approve or reject borrow requests  
 - Mark books as returned  
 
