@@ -9,11 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class BorrowingController extends Controller
 {
-    /**
-     * ======================
-     * USER SECTION
-     * ======================
-     */
+    // User Section
 
     // Display all available books
     public function index()
@@ -69,11 +65,11 @@ class BorrowingController extends Controller
     }
 
 
-    /**
-     * ======================
-     * ADMIN SECTION
-     * ======================
-     */
+
+
+
+
+    // Admin Section
 
     // Display all borrowings
     public function adminIndex()
