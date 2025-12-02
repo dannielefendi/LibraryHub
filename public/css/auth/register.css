@@ -24,6 +24,8 @@ html,body{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI,Robo
     border:1px solid rgba(255,255,255,0.6);
     padding:var(--card-padding);
     position:relative;
+    max-height:95vh;
+    overflow-y:auto;
 }
 .card__header{display:flex;flex-direction:column;align-items:center;text-align:center}
 .logo{
@@ -50,11 +52,9 @@ html,body{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI,Robo
 .input:focus{outline:none;border-color:#d1d5db;background:#fff;box-shadow:0 0 0 3px rgba(17,24,39,0.04)}
 .error{margin-top:0.35rem;color:#b91c1c;font-size:0.75rem;padding-left:6px}
 
-.form__meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:0.5rem}
-.checkbox-label{display:flex;align-items:center;cursor:pointer;font-size:0.875rem;color:#0f172a}
-.checkbox{width:18px;height:18px;cursor:pointer;accent-color:#0f172a;border-radius:4px}
-.checkbox-text{margin-left:0.5rem;user-select:none}
-.link{font-size:0.875rem;color:#0f172a;text-decoration:none;font-weight:600}
+.form__meta{display:flex;align-items:center;justify-content:center;margin-bottom:1rem;margin-top:0.5rem}
+.register-link{font-size:0.875rem;color:#0f172a;text-align:center}
+.link{font-size:0.875rem;color:#0f172a;text-decoration:none;font-weight:600;margin-left:0.25rem}
 .link:hover{text-decoration:underline;color:#111827}
 
 .form__submit{padding-top:0.5rem}
