@@ -1,6 +1,10 @@
+<<<<<<< HEAD
 /* Styles for login page (migrated from Tailwind utilities) */
 
 :root {
+=======
+:root{
+>>>>>>> c520d00 (refactor: register page V1)
     --card-radius: 2rem;
     --card-padding: 2rem;
     --bg-start: #dff6ff;
