@@ -18,6 +18,12 @@
                     class="btn btn-outline-secondary">
                     Manage Borrowings
                 </button>
+
+                <button
+                    onclick="window.location.href='{{ route('manage.users') }}'"
+                    class="btn btn-outline-secondary">
+                    User List
+                </button>
             </div>
         </div>
     </x-slot>

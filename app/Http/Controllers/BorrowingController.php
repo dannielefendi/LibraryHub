@@ -6,6 +6,7 @@ use App\Models\Book;
 use App\Models\Borrowing;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class BorrowingController extends Controller
 {
@@ -19,6 +20,41 @@ class BorrowingController extends Controller
     }
 
     // User requests to borrow a book
+    // public function store(Request $request)
+    // {
+    //     $request->validate([
+    //         'book_id' => 'required|exists:books,id',
+    //     ]);
+
+    //     $book = Book::findOrFail($request->book_id);
+
+    //     // Check stock availability
+    //     if ($book->stock <= 0) {
+    //         return back()->with('error', 'Book stock is empty!');
+    //     }
+
+    //     // Check if user already borrowed or has a pending request for this book
+    //     $existing = Borrowing::where('user_id', Auth::id())
+    //         ->where('book_id', $book->id)
+    //         ->whereIn('status', ['Pending', 'Borrowed'])
+    //         ->first();
+
+    //     if ($existing) {
+    //         return back()->with('error', 'You already borrowed or requested this book.');
+    //     }
+
+    //     // Create borrowing request (status: Pending)
+    //     Borrowing::create([
+    //         'user_id' => Auth::id(),
+    //         'book_id' => $book->id,
+    //         'status' => 'Pending',
+    //         'borrow_date' => now(),
+    //     ]);
+
+    //     return back()->with('success', 'Borrow request submitted. Waiting for admin approval.');
+    // }
+
+    // User directly borrows a book without approval
     public function store(Request $request)
     {
         $request->validate([
@@ -32,26 +68,41 @@ class BorrowingController extends Controller
             return back()->with('error', 'Book stock is empty!');
         }
 
-        // Check if user already borrowed or has a pending request for this book
+        // Check if user already borrowed this book and hasn't returned it
         $existing = Borrowing::where('user_id', Auth::id())
             ->where('book_id', $book->id)
-            ->whereIn('status', ['Pending', 'Borrowed'])
+            ->where('status', 'Borrowed')
             ->first();
 
         if ($existing) {
-            return back()->with('error', 'You already borrowed or requested this book.');
+            return back()->with('error', 'You already borrowed this book.');
         }
 
-        // Create borrowing request (status: Pending)
+        
+        // User can only borrow 3 books
+        $totalBorrowed = Borrowing::where('user_id', Auth::id())
+            ->where('status', ['Borrowed', 'Late'])
+            ->count();
+
+        if ($totalBorrowed >= 3) {
+            return back()->with('error', 'You can only borrow a maximum of 3 books.');
+        }
+
+        // Create borrowing directly as Borrowed
         Borrowing::create([
             'user_id' => Auth::id(),
             'book_id' => $book->id,
-            'status' => 'Pending',
+            'status' => 'Borrowed',   // langsung borrowed
             'borrow_date' => now(),
+            'due_date'   => now()->addDays(1) //hrs diganti 14 hari
         ]);
 
-        return back()->with('success', 'Borrow request submitted. Waiting for admin approval.');
+        // Reduce stock immediately
+        $book->decrement('stock');
+
+        return back()->with('success', 'Book borrowed successfully.');
     }
+
 
     // Show user's own borrowings
     public function showUserBorrowings()
@@ -65,10 +116,6 @@ class BorrowingController extends Controller
     }
 
 
-
-
-
-
     // Admin Section
 
     // Display all borrowings
@@ -78,38 +125,38 @@ class BorrowingController extends Controller
         return view('admin.borrowings.index', compact('borrowings'));
     }
 
-    // Admin approves a borrowing
-    public function approve($id)
-    {
-        $borrowing = Borrowing::findOrFail($id);
-        $book = $borrowing->book;
+    // // Admin approves a borrowing
+    // public function approve($id)
+    // {
+    //     $borrowing = Borrowing::findOrFail($id);
+    //     $book = $borrowing->book;
 
-        // Check stock availability
-        if ($book->stock <= 0) {
-            return back()->with('error', 'Book stock is empty. Cannot approve.');
-        }
+    //     // Check stock availability
+    //     if ($book->stock <= 0) {
+    //         return back()->with('error', 'Book stock is empty. Cannot approve.');
+    //     }
 
-        $borrowing->update([
-            'status' => 'Borrowed',
-            'borrow_date' => now(),
-        ]);
+    //     $borrowing->update([
+    //         'status' => 'Borrowed',
+    //         'borrow_date' => now(),
+    //     ]);
 
-        // Decrease book stock
-        $book->decrement('stock');
+    //     // Decrease book stock
+    //     $book->decrement('stock');
 
-        return back()->with('success', 'Borrowing approved successfully.');
-    }
+    //     return back()->with('success', 'Borrowing approved successfully.');
+    // }
 
-    // Admin rejects a borrowing
-    public function reject($id)
-    {
-        $borrowing = Borrowing::findOrFail($id);
-        $borrowing->update([
-            'status' => 'Rejected',
-        ]);
+    // // Admin rejects a borrowing
+    // public function reject($id)
+    // {
+    //     $borrowing = Borrowing::findOrFail($id);
+    //     $borrowing->update([
+    //         'status' => 'Rejected',
+    //     ]);
 
-        return back()->with('info', 'Borrowing request has been rejected.');
-    }
+    //     return back()->with('info', 'Borrowing request has been rejected.');
+    // }
 
     // Admin marks a book as returned
     public function markReturned($id)
@@ -117,14 +164,67 @@ class BorrowingController extends Controller
         $borrowing = Borrowing::findOrFail($id);
         $book = $borrowing->book;
 
-        // Increase book stock
+        $today = Carbon::now();
+        $dueDate = Carbon::parse($borrowing->due_date);
+
+        // Hitung keterlambatan
+        $lateDays = 0;
+        $finePerDay = 2000;
+        $fineTotal = 0;
+
+        if ($today->greaterThan($dueDate)) {
+            $lateDays = $dueDate->startOfDay()->diffInDays($today->startOfDay());
+            $fineTotal = (int) $lateDays * (int) $finePerDay;
+        }
+
         $book->increment('stock');
 
         $borrowing->update([
-            'status' => 'Returned',
-            'return_date' => now(),
+            'status'         => 'Returned',
+            'return_date'    => now(),
+            'late_days'      => $lateDays,
         ]);
 
-        return back()->with('success', 'Book has been successfully returned.');
+        $message = $lateDays > 0 
+            ? "Book returned late ($lateDays days). Total fine: Rp ".number_format($fineTotal)
+            : "Book returned on time. No fine.";
+
+        return back()->with('success', $message);
     }
+
+   public function payFine(Request $request, $id)
+    {
+        $borrow = Borrowing::findOrFail($id);
+
+        $amount = (int) $request->input('amount');
+
+        if ($amount > $borrow->fine_remaining) {
+            return back()->with('error', 'Payment exceeds remaining fine!');
+        }
+
+        $borrow->update([
+            'fine_remaining' => $borrow->fine_remaining - $amount
+        ]);
+
+        // Update status Unavailable jika masih ada fine_remaining
+        $totalRemaining = Borrowing::where('user_id', $borrow->user_id)
+            ->where('fine_remaining', '>', 0)
+            ->sum('fine_remaining');
+
+        if ($totalRemaining > 0) {
+            // bisa diupdate di tabel user, misal $user->status = 'Unavailable'
+        }
+
+        return back()->with('success', 'Payment successful!');
+    }
+
+    // Optional: helper untuk hitung total denda user
+    public static function totalFineRemaining($userId)
+    {
+        return Borrowing::where('user_id', $userId)
+            ->where('fine_remaining', '>', 0)
+            ->sum('fine_remaining');
+    }
+
+
 }

@@ -21,13 +21,19 @@ return new class extends Migration
             // Tanggal peminjaman dan pengembalian
             $table->date('borrow_date')->nullable();
             $table->date('return_date')->nullable();
+            $table->dateTime('due_date')->nullable();
+            $table->integer('late_days')->nullable();
 
             // Status peminjaman
-            // Pending = menunggu approval admin
-            // Dipinjam = sudah disetujui admin
-            // Dikembalikan = buku sudah dikembalikan
-            // Ditolak = permintaan peminjaman ditolak admin
-            $table->enum('status', ['Pending', 'Borrowed', 'Returned', 'Rejected'])->default('Pending');
+            // Borrowed = Buku dipinjem
+            // Returned = Buku Dikembalikan
+            // Late = Buku Melewati due date
+            // Unavailable = Tidak bisa meminjam buku
+            $table->enum('status', ['Borrowed','Returned', 'Late', 'Unavailable'])->default('Borrowed');
+
+            // Denda
+            $table->bigInteger('fine_total')->nullable();
+            $table->bigInteger('fine_remaining')->nullable();
 
             // Kolom tambahan opsional untuk catatan admin
             $table->text('admin_note')->nullable();
