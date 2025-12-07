@@ -94,7 +94,7 @@ class BorrowingController extends Controller
             'book_id' => $book->id,
             'status' => 'Borrowed',   // langsung borrowed
             'borrow_date' => now(),
-            'due_date'   => now()->addDays(14) //hrs diganti 14 hari
+            'due_date'   => now()->addDays(14),
         ]);
 
         // Reduce stock immediately
