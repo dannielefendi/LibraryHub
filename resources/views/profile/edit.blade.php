@@ -12,6 +12,12 @@
                     @include('profile.partials.update-profile-information-form')
                 </div>
             </div>
+            
+            <div class="mb-4 p-4 bg-red-100 text-red-800 rounded">
+                <strong>Total Denda Tersisa:</strong>
+                Rp {{ number_format($totalFineRemaining, 0, ',', '.') }}
+            </div>
+
 
             <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
                 <div class="max-w-xl">

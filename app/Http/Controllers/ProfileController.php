@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Models\Borrowing;
 
 class ProfileController extends Controller
 {
@@ -16,8 +17,12 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
+        $totalFineRemaining = Borrowing::where('user_id', Auth::id())
+        ->sum('fine_remaining');
+
         return view('profile.edit', [
             'user' => $request->user(),
+            'totalFineRemaining' => $totalFineRemaining,
         ]);
     }
 
@@ -57,4 +62,5 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
+
 }
