@@ -6,6 +6,18 @@
     </x-slot>
     <div class="py-8">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-4">
+            <div class="mb-6 p-4 bg-blue-50 border border-blue-200 rounded">
+                <h3 class="text-lg font-semibold text-gray-800">
+                    Hi, {{ Auth::user()->name }}!
+                </h3>
+
+                @if ($totalFine > 0)
+                    <p class="mt-1 text-red-600 font-medium">
+                        Total Fine: Rp {{ number_format($totalFine, 0, ',', '.') }}
+                    </p>
+                @endif
+            </div>
+        
             @if (session('success'))
                 <div class="mb-4 p-4 bg-green-100 text-green-700 rounded">
                     {{ session('success') }}
@@ -15,6 +27,7 @@
                     {{ session('error') }}
                 </div>
             @endif
+
 
             <div class="row">
                 @foreach ($books as $book)
