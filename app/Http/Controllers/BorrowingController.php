@@ -16,7 +16,12 @@ class BorrowingController extends Controller
     public function index()
     {
         $books = Book::where('stock', '>', 0)->with('category')->get();
-        return view('user.dashboard', compact('books'));
+
+        $totalFine = Borrowing::where('user_id', Auth::id())
+            ->where('fine_remaining', '>', 0)
+            ->sum('fine_remaining');
+
+        return view('user.dashboard', compact('books', 'totalFine'));
     }
 
     // User requests to borrow a book
@@ -87,6 +92,18 @@ class BorrowingController extends Controller
         if ($totalBorrowed >= 3) {
             return back()->with('error', 'You can only borrow a maximum of 3 books.');
         }
+
+        $fine_remaining = Borrowing::where('user_id', Auth::id())
+            ->where('fine_remaining', '>', 0)
+            ->sum('fine_remaining');
+
+        if ($fine_remaining > 0) {
+        return back()->with(
+            'error',
+            'Please Pay Your Fine First. Total fine: Rp ' . number_format($fine_remaining, 0, ',', '.')
+        );
+}
+
 
         // Create borrowing directly as Borrowed
         Borrowing::create([
