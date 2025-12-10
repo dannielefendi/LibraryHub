@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\BorrowingController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -41,11 +42,18 @@ Route::middleware(['auth', 'user'])->group(function () {
 });
 
 // Borrow approval system (hanya admin )
+// Borrow approval system (hanya admin)
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/borrowings', [BorrowingController::class, 'adminIndex'])->name('admin.borrowings');
     Route::post('/admin/borrowings/{id}/approve', [BorrowingController::class, 'approve'])->name('admin.borrowings.approve');
     Route::post('/admin/borrowings/{id}/reject', [BorrowingController::class, 'reject'])->name('admin.borrowings.reject');
     Route::post('/admin/borrowings/{id}/returned', [BorrowingController::class, 'markReturned'])->name('admin.borrowings.returned');
+
+    Route::get('/admin/users', [UserController::class, 'index'])->name('manage.users');
+
+    // Route bayar denda (admin input pembayaran onsite)
+    Route::post('/admin/borrowings/{id}/pay-fine', [BorrowingController::class, 'payFine'])
+        ->name('admin.borrowings.payFine');
 });
 
 

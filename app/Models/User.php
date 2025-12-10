@@ -17,6 +17,8 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
+    protected $table = 'users';
+
     protected $fillable = [
         'name',
         'email',
@@ -44,5 +46,10 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function borrow()
+    {
+        return $this->hasMany(Borrowing::class);
     }
 }
