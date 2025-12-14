@@ -9,7 +9,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
                 {{-- ⚙️ GUNAKAN ROUTE UPDATE DAN KIRIM ID --}}
-                <form action="{{ route('books.update', $book->id) }}" method="POST">
+                <form action="{{ route('books.update', $book->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
 
@@ -34,6 +34,11 @@
                     </div>
 
                     <div class="mb-4">
+                        <label class="block text-gray-700">Synopsis</label>
+                        <textarea name="synopsis" class="form-textarea w-full" rows="4">{{ $book->synopsis }}</textarea>
+                    </div>
+
+                    <div class="mb-4">
                         <label class="block text-gray-700">Category</label>
                         <select name="category_id" class="form-select w-full" required>
                             <option value="">-- Select Category --</option>
@@ -43,6 +48,17 @@
                                 </option>
                             @endforeach
                         </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-gray-700">Cover Image</label>
+                        @if($book->image_cover)
+                            <div class="mb-2">
+                                <img src="{{ asset('storage/' . $book->image_cover) }}" alt="Current Cover" class="w-32 h-48 object-cover border">
+                            </div>
+                        @endif
+                        <input type="file" name="image_cover" class="form-input w-full" accept="image/*">
+                        <small class="text-gray-500">Leave empty to keep current image</small>
                     </div>
 
                     <div class="flex justify-between mt-6">

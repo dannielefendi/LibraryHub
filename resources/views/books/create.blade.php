@@ -8,7 +8,7 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
-                <form action="{{ route('books.store') }}" method="POST">
+                <form action="{{ route('books.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-4">
                         <label class="block text-gray-700">Title</label>
@@ -31,6 +31,11 @@
                     </div>
 
                     <div class="mb-4">
+                        <label class="block text-gray-700">Synopsis</label>
+                        <textarea name="synopsis" class="form-textarea w-full" rows="4"></textarea>
+                    </div>
+
+                    <div class="mb-4">
                         <label class="block text-gray-700">Category</label>
                         <select name="category_id" class="form-select w-full" required>
                             <option value="">-- Select Category --</option>
@@ -38,6 +43,11 @@
                                 <option value="{{ $category->id }}">{{ $category->name }}</option>
                             @endforeach
                         </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-gray-700">Cover Image</label>
+                        <input type="file" name="image_cover" class="form-input w-full" accept="image/*" required>
                     </div>
 
                     <div class="flex justify-between mt-6">

@@ -61,6 +61,7 @@
                                 <td class="px-4 py-2">{{ $book->year }}</td>
                                 <td class="px-4 py-2">{{ $book->stock }}</td>
                                 <td class="px-4 py-2 text-center">
+                                    <a href="{{ route('books.show', $book) }}" class="btn btn-info mr-2">View</a>
                                     <a href="{{ route('books.edit', $book) }}"
                                        class="btn btn-secondary">Edit</a>
                                     <form action="{{ route('books.destroy', $book) }}" method="POST" style="display:inline-block;">
