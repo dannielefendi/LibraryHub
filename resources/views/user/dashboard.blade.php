@@ -37,7 +37,15 @@
                                 <h5 class="card-title">{{ $book->title }}</h5>
                                 <p class="card-text mb-1"><strong>Author:</strong> {{ $book->author }}</p>
                                 <p class="card-text mb-1"><strong>Year:</strong> {{ $book->year }}</p>
-                                <p class="card-text mb-1"><strong>Category:</strong> {{ $book->category->name }}</p>
+                                <p class="card-text mb-1"><strong>Categories:</strong>
+                                    @if($book->categories->count() > 0)
+                                        @foreach($book->categories as $category)
+                                            <span class="badge badge-secondary">{{ $category->name }}</span>
+                                        @endforeach
+                                    @else
+                                        -
+                                    @endif
+                                </p>
                                 <p class="card-text mb-3"><strong>Stock:</strong> {{ $book->stock }}</p>
 
                                 <form action="{{ route('user.borrow') }}" method="POST">
