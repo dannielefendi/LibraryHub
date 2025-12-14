@@ -15,7 +15,7 @@ class BorrowingController extends Controller
     // Display all available books
     public function index()
     {
-        $books = Book::where('stock', '>', 0)->with('category')->get();
+        $books = Book::where('stock', '>', 0)->with('categories')->get();
         return view('user.dashboard', compact('books'));
     }
 
