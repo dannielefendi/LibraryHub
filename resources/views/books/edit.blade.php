@@ -78,15 +78,17 @@
                     </div>
 
                     <div class="mb-4">
-                        <label class="block text-gray-700">Category</label>
-                        <select name="category_id" class="form-select w-full" required>
-                            <option value="">-- Select Category --</option>
+                        <label class="block text-gray-700">Categories</label>
+                        <div class="grid grid-cols-2 gap-2">
                             @foreach ($categories as $category)
-                                <option value="{{ $category->id }}" {{ $book->category_id == $category->id ? 'selected' : '' }}>
-                                    {{ $category->name }}
-                                </option>
+                                <label class="inline-flex items-center">
+                                    <input type="checkbox" name="categories[]" value="{{ $category->id }}" 
+                                           {{ $book->categories->pluck('id')->contains($category->id) ? 'checked' : '' }} 
+                                           class="form-checkbox">
+                                    <span class="ml-2">{{ $category->name }}</span>
+                                </label>
                             @endforeach
-                        </select>
+                        </div>
                     </div>
                 </div>
 

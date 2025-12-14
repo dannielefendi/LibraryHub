@@ -42,7 +42,8 @@ class BookController extends Controller
             'year' => 'required|integer',
             'stock' => 'required|integer',
             'synopsis' => 'nullable|string',
-            'category_id' => 'required|exists:categories,id',
+            'categories' => 'required|array|min:1',
+            'categories.*' => 'exists:categories,id',
             'image_cover' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
@@ -57,7 +58,10 @@ class BookController extends Controller
             $data['image_cover'] = $request->file('image_cover')->store('book_covers', 'public');
         }
         $data['admin_id'] = auth()->id();
-        Book::create($data);
+        $categories = $data['categories'];
+        unset($data['categories']);
+        $book = Book::create($data);
+        $book->categories()->attach($categories);
 
         // Redirect ke halaman daftar buku dengan pesan sukses
         return redirect()->route('books.index')->with('success', 'Buku berhasil ditambahkan!');
@@ -94,7 +98,8 @@ class BookController extends Controller
             'year' => 'required|integer',
             'stock' => 'required|integer',
             'synopsis' => 'nullable|string',
-            'category_id' => 'required|exists:categories,id',
+            'categories' => 'required|array|min:1',
+            'categories.*' => 'exists:categories,id',
             'image_cover' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
@@ -107,7 +112,10 @@ class BookController extends Controller
             $data['image_cover'] = $request->file('image_cover')->store('book_covers', 'public');
         }
 
+        $categories = $data['categories'];
+        unset($data['categories']);
         $book->update($data);
+        $book->categories()->sync($categories);
 
         return redirect()->route('books.index')->with('success', 'Data buku berhasil diperbarui!');
     }
