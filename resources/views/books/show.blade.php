@@ -21,7 +21,17 @@
                         <p class="text-lg text-gray-600">by {{ $book->author }}</p>
                         <p class="mt-4"><strong>Year:</strong> {{ $book->year }}</p>
                         <p><strong>Stock:</strong> {{ $book->stock }}</p>
-                        <p><strong>Category:</strong> {{ $book->category->name ?? '-' }}</p>
+                        <p><strong>Categories:</strong>
+                            @if($book->categories->count() > 0)
+                                @foreach($book->categories as $category)
+                                    <span class="inline-block bg-gray-200 rounded-full px-2 py-1 text-xs font-semibold text-gray-700 mr-1">
+                                        {{ $category->name }}
+                                    </span>
+                                @endforeach
+                            @else
+                                -
+                            @endif
+                        </p>
                         @if($book->synopsis)
                             <p class="mt-4"><strong>Synopsis:</strong></p>
                             <p>{{ $book->synopsis }}</p>

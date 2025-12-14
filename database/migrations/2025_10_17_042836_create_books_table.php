@@ -20,7 +20,6 @@ return new class extends Migration
             $table->integer('stock');
             $table->text('synopsis');
             $table->string('image_cover')->nullable();
-            $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->foreignId('admin_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });

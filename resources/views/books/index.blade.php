@@ -57,7 +57,17 @@
                             <tr>
                                 <td class="px-4 py-2">{{ $book->title }}</td>
                                 <td class="px-4 py-2">{{ $book->author }}</td>
-                                <td class="px-4 py-2">{{ $book->category->name ?? '-' }}</td>
+                                <td class="px-4 py-2">
+                                    @if($book->categories->count() > 0)
+                                        @foreach($book->categories as $category)
+                                            <span class="inline-block bg-gray-200 rounded-full px-2 py-1 text-xs font-semibold text-gray-700 mr-1">
+                                                {{ $category->name }}
+                                            </span>
+                                        @endforeach
+                                    @else
+                                        -
+                                    @endif
+                                </td>
                                 <td class="px-4 py-2">{{ $book->year }}</td>
                                 <td class="px-4 py-2">{{ $book->stock }}</td>
                                 <td class="px-4 py-2 text-center">
