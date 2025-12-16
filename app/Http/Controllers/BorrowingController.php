@@ -15,7 +15,9 @@ class BorrowingController extends Controller
     // Display all available books
     public function index()
     {
-        $books = Book::where('stock', '>', 0)->with('category')->get();
+        $books = Book::where('stock', '>', 0)
+            ->with('categories')
+            ->get();
 
         $totalFine = Borrowing::where('user_id', Auth::id())
             ->where('fine_remaining', '>', 0)
@@ -23,6 +25,7 @@ class BorrowingController extends Controller
 
         return view('user.dashboard', compact('books', 'totalFine'));
     }
+
 
     // User requests to borrow a book
     // public function store(Request $request)

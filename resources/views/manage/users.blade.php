@@ -1,45 +1,101 @@
-<x-app-layout>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Users - Library Hub</title>
 
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="{{ asset('css/admin/user_list.css') }}">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">
+                📚 <span>Library Hub</span>
+            </div>
 
-    <div class="container mt-4">
-        <h1 class="fs-3 fw-semibold mb-3">Library Users</h1>
-        <div class="d-block">
-            @foreach($users as $index => $user)
-                <div class="border p-3 mt-2 rounded w-50">
-                    <div class="d-flex justify-content-between border-bottom pb-2">
-                        <h2 class="fw-bold fs-5" >{{$user->name}}</h2>
-                        <p class="fw-bold fs-7">ID: {{$user->id}}</p>
-                        <p class="fw-bold fs-8">{{$user->email}}</p>
-                    </div>
-                     <p class="fs-7 mt-2">Joined On: {{ $user->created_at->format('F j, Y') }}</p>
-                    @if($user->borrow->count() > 0)
-                        <p class="fs-7 mt-2">Borrowings item: {{$user->borrow->count()}}</p>
-                    @else
-                        <p class="fs-7 mt-2">No borrowing records on this users</p>
-                    @endif
+            <!-- User Dropdown -->
+            <div class="user-menu" x-data="{ open: false }">
+                <button @click="open = !open" class="user-button">
+                    <span>{{ Auth::user()->name }}</span>
+                    <span class="arrow" :class="{ 'rotate': open }">▼</span>
+                </button>
 
-                     <div class="mt-3">
-                        @foreach($user->borrow as $index => $book)
-                            <div class="d-flex gap-2 {{$index > 0 ? 'border-top pt-2 mt-2' : ''}}">
-                                <p class="fs-7">{{$book->book->title}}</p>
-                                <div class="border-end"></div>
-                                <p class="fs-7 px-3 rounded-pill fw-bold
-                                    {{
-                                        $book->status == 'Returned' ? 'bg-success' :
-                                        ($book->status == 'Late' ? 'bg-danger' :
-                                        ($book->status == 'Borrowed' ? 'bg-primary' : ''))
-                                    }}">{{$book->status}}
-                                </p>
-                                @if($book->status == 'Late' && $book->fine_remaining > 0)
-                                    <p class="text-danger"> Fine remaining Rp {{ number_format($book->fine_remaining, 0, ',', '.') }}</p>
-                                @elseif($book->status == 'Returned' && $book->fine_remaining > 0)
-                                     <p class="text-danger"> Fine remaining Rp {{ number_format($book->fine_remaining, 0, ',', '.') }}</p>
-                                @endif
+                <div x-show="open"
+                     @click.away="open = false"
+                     x-transition
+                     class="dropdown">
+                    <a href="{{ route('profile.edit') }}">Profile</a>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit">Log Out</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1>👥 Library Users</h1>
+            <a href="{{ route('books.index') }}" class="btn btn-secondary">← Back to Books</a>
+        </div>
+
+        <!-- Users List -->
+        <div class="users-container">
+            @foreach($users as $user)
+                <div class="user-card">
+                    <!-- User Header -->
+                    <div class="user-header">
+                        <div class="user-info">
+                            <h2>{{ $user->name }}</h2>
+                            <div class="user-meta">
+                                <span class="user-id">ID: {{ $user->id }}</span>
+                                <span class="user-email">📧 {{ $user->email }}</span>
                             </div>
-                        @endforeach
-                     </div>
+                        </div>
+                    </div>
+
+                    <!-- User Details -->
+                    <div class="user-details">
+                        <p class="join-date">📅 Joined On: {{ $user->created_at->format('F j, Y') }}</p>
+
+                        @if($user->borrow->count() > 0)
+                            <p class="borrow-count">📚 Borrowing Items: <strong>{{ $user->borrow->count() }}</strong></p>
+                        @else
+                            <p class="no-records">No borrowing records for this user</p>
+                        @endif
+                    </div>
+
+                    <!-- Borrowing List -->
+                    @if($user->borrow->count() > 0)
+                        <div class="borrowing-list">
+                            @foreach($user->borrow as $index => $book)
+                                <div class="borrowing-item {{ $index > 0 ? 'has-border' : '' }}">
+                                    <div class="book-info">
+                                        <span class="book-title">📖 {{ $book->book->title }}</span>
+                                        <span class="status-badge status-{{ strtolower($book->status) }}">
+                                            {{ $book->status }}
+                                        </span>
+                                    </div>
+
+                                    @if(($book->status == 'Late' || $book->status == 'Returned') && $book->fine_remaining > 0)
+                                        <p class="fine-warning">
+                                            ⚠️ Fine Remaining: Rp {{ number_format($book->fine_remaining, 0, ',', '.') }}
+                                        </p>
+                                    @endif
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
                 </div>
             @endforeach
         </div>
-    </div>
-</x-app-layout>
+    </main>
+</body>
+</html>
