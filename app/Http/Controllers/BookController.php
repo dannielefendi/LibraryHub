@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Book;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class BookController extends Controller
 {
@@ -40,7 +41,10 @@ class BookController extends Controller
             'author' => 'required',
             'year' => 'required|integer',
             'stock' => 'required|integer',
-            'category_id' => 'required|exists:categories,id',
+            'synopsis' => 'nullable|string',
+            'categories' => 'required|array|min:1',
+            'categories.*' => 'exists:categories,id',
+            'image_cover' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
 
@@ -49,7 +53,15 @@ class BookController extends Controller
         // Book::create($request->all());
 
         // Menyimpan data ke database
-        Book::create($request->all());
+        $data = $request->all();
+        if ($request->hasFile('image_cover')) {
+            $data['image_cover'] = $request->file('image_cover')->store('book_covers', 'public');
+        }
+        $data['admin_id'] = auth()->id();
+        $categories = $data['categories'];
+        unset($data['categories']);
+        $book = Book::create($data);
+        $book->categories()->attach($categories);
 
         // Redirect ke halaman daftar buku dengan pesan sukses
         return redirect()->route('books.index')->with('success', 'Buku berhasil ditambahkan!');
@@ -85,10 +97,25 @@ class BookController extends Controller
             'author' => 'required',
             'year' => 'required|integer',
             'stock' => 'required|integer',
-            'category_id' => 'required|exists:categories,id',
+            'synopsis' => 'nullable|string',
+            'categories' => 'required|array|min:1',
+            'categories.*' => 'exists:categories,id',
+            'image_cover' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $book->update($request->all());
+        $data = $request->all();
+        if ($request->hasFile('image_cover')) {
+            // Hapus gambar lama jika ada
+            if ($book->image_cover) {
+                Storage::disk('public')->delete($book->image_cover);
+            }
+            $data['image_cover'] = $request->file('image_cover')->store('book_covers', 'public');
+        }
+
+        $categories = $data['categories'];
+        unset($data['categories']);
+        $book->update($data);
+        $book->categories()->sync($categories);
 
         return redirect()->route('books.index')->with('success', 'Data buku berhasil diperbarui!');
     }
@@ -99,6 +126,9 @@ class BookController extends Controller
     public function destroy(Book $book)
     {
         //
+        if ($book->image_cover) {
+            Storage::disk('public')->delete($book->image_cover);
+        }
         $book->delete();
         return redirect()->route('books.index')->with('success', 'Buku berhasil dihapus!');
     }

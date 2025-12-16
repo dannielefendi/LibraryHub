@@ -5,17 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Book - Library Hub</title>
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <link rel="stylesheet" href="{{ asset('css/admin/edit_books.css') }}">
-</head>
-<body>
-    <!-- Navigation -->
-    <nav>
-        <div class="nav-container">
-            <div class="logo">
-                📚 <span>Library Hub</span>
-            </div>
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
+                {{-- ⚙️ GUNAKAN ROUTE UPDATE DAN KIRIM ID --}}
+                <form action="{{ route('books.update', $book->id) }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
 
             <!-- User Dropdown -->
             <div class="user-menu" x-data="{ open: false }">
@@ -76,17 +72,42 @@
                         <input type="number" name="stock" value="{{ $book->stock }}" required>
                     </div>
 
+<<<<<<< HEAD
                     <!-- Category -->
                     <div class="form-group full-width">
                         <label>Category</label>
                         <select name="category_id" required>
                             <option value="">-- Select Category --</option>
+=======
+                    <div class="mb-4">
+                        <label class="block text-gray-700">Synopsis</label>
+                        <textarea name="synopsis" class="form-textarea w-full" rows="4">{{ $book->synopsis }}</textarea>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-gray-700">Categories</label>
+                        <div class="grid grid-cols-2 gap-2">
+>>>>>>> patch
                             @foreach ($categories as $category)
-                                <option value="{{ $category->id }}" {{ $book->category_id == $category->id ? 'selected' : '' }}>
-                                    {{ $category->name }}
-                                </option>
+                                <label class="inline-flex items-center">
+                                    <input type="checkbox" name="categories[]" value="{{ $category->id }}" 
+                                           {{ $book->categories->pluck('id')->contains($category->id) ? 'checked' : '' }} 
+                                           class="form-checkbox">
+                                    <span class="ml-2">{{ $category->name }}</span>
+                                </label>
                             @endforeach
-                        </select>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-gray-700">Cover Image</label>
+                        @if($book->image_cover)
+                            <div class="mb-2">
+                                <img src="{{ asset('storage/' . $book->image_cover) }}" alt="Current Cover" class="w-32 h-48 object-cover border">
+                            </div>
+                        @endif
+                        <input type="file" name="image_cover" class="form-input w-full" accept="image/*">
+                        <small class="text-gray-500">Leave empty to keep current image</small>
                     </div>
                 </div>
 
