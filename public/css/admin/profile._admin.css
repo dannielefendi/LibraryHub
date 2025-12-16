@@ -308,6 +308,21 @@ main {
     border: 1px solid #ef4444;
 }
 
+.tab-btn {
+    background: none;
+    border: none;
+    padding-bottom: 10px;
+    font-weight: 500;
+    color: #666;
+    cursor: pointer;
+}
+
+.tab-btn.active {
+    color: #ff6b3d;
+    border-bottom: 2px solid #ff6b3d;
+}
+
+
 /* Responsive */
 @media (max-width: 768px) {
     .page-header {

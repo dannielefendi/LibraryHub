@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use App\Models\Borrowing;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
@@ -13,10 +14,35 @@ class BorrowingController extends Controller
     // User Section
 
     // Display all available books
-    public function index()
+    public function index(Request $request) 
     {
-        $books = Book::where('stock', '>', 0)->with('categories')->get();
-        return view('user.dashboard', compact('books'));
+        $totalFine = Borrowing::where('user_id', Auth::id())
+            ->where('fine_remaining', '>', 0)
+            ->sum('fine_remaining');
+
+        $categories = Category::all();
+
+        $books = Book::with('categories')
+            ->where('stock', '>', 0)
+            ->when($request->categories, function($query, $categories) {
+                $query->whereHas('categories', function($q) use ($categories) {
+                    $q->whereIn('categories.id', $categories); // <- ganti where jadi whereIn
+                });
+            })
+
+            ->when($request->search, function($query, $search) {
+                $query->where(function($q) use ($search) {
+                    $q->where('title', 'like', "%{$search}%")
+                    ->orWhere('author', 'like', "%{$search}%");
+                });
+            })
+            
+            ->paginate(6)
+            ->withQueryString();
+
+        $noBooks = $books->total() === 0;
+
+        return view('user.dashboard', compact('books', 'totalFine', 'categories', 'noBooks'));
     }
 
     // User requests to borrow a book
@@ -71,7 +97,7 @@ class BorrowingController extends Controller
         // Check if user already borrowed this book and hasn't returned it
         $existing = Borrowing::where('user_id', Auth::id())
             ->where('book_id', $book->id)
-            ->where('status', 'Borrowed')
+            ->whereIn('status', ['Borrowed', 'Late'])
             ->first();
 
         if ($existing) {
@@ -87,6 +113,7 @@ class BorrowingController extends Controller
         if ($totalBorrowed >= 3) {
             return back()->with('error', 'You can only borrow a maximum of 3 books.');
         }
+
 
         $fine_remaining = Borrowing::where('user_id', Auth::id())
             ->where('fine_remaining', '>', 0)

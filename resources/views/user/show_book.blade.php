@@ -117,10 +117,14 @@
                     </a>
                     @endif
 
-                    <a href="{{ route('books.edit', $book) }}" class="btn btn-primary w-100 mb-2">
-                        Edit Book
-                    </a>
-                   
+                    <form action="{{ route('user.borrow') }}" method="POST" class="mt-auto">
+                        @csrf
+                        <input type="hidden" name="book_id" value="{{ $book->id }}">
+                        <button type="submit" class="btn btn-primary w-100">
+                            {{ __('Borrow') }}
+                        </button>
+                    </form>
+                
 
                 </div>
                 <div class="container">

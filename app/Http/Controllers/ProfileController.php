@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use App\Models\Borrowing;
+use Carbon\Carbon;
 
 class ProfileController extends Controller
 {
@@ -20,9 +21,16 @@ class ProfileController extends Controller
         $totalFineRemaining = Borrowing::where('user_id', Auth::id())
         ->sum('fine_remaining');
 
+        $user = Auth::user();
+
+        $borrowedCount = Borrowing::where('user_id', $user->id)
+                        ->whereIn('status', ['Borrowed', 'Late', 'Returned'])
+                        ->count();
+
         return view('profile.edit', [
             'user' => $request->user(),
             'totalFineRemaining' => $totalFineRemaining,
+            'borrowedCount' => $borrowedCount,
         ]);
     }
 

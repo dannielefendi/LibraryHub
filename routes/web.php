@@ -39,6 +39,7 @@ Route::middleware(['auth', 'user'])->group(function () {
     Route::get('/user/dashboard', [BorrowingController::class, 'index'])->name('user.dashboard');
     Route::post('/user/borrow', [BorrowingController::class, 'store'])->name('user.borrow');
     Route::get('/user/my-borrowings', [BorrowingController::class, 'showUserBorrowings'])->name('user.borrowings');
+    Route::get('/user/books/{book}', [BookController::class, 'showUserBook'])->name('user.books.show');
 });
 
 // Borrow approval system (hanya admin )

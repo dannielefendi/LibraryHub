@@ -42,7 +42,7 @@
     <main>
         <!-- Page Header -->
         <div class="page-header">
-            <h1>📋 Borrowings Management</h1>
+            <h1 class="font-semibold fs-2">Borrowings Management</h1>
             <a href="{{ route('books.index') }}" class="btn btn-secondary">← Back to Books</a>
         </div>
 
@@ -70,15 +70,15 @@
 
                     <div class="card-body">
                         <div class="info-row">
-                            <span class="label">👤 User:</span>
+                            <span class="label">User:</span>
                             <span class="value">{{ $borrowing->user->name }}</span>
                         </div>
                         <div class="info-row">
-                            <span class="label">📅 Borrow Date:</span>
+                            <span class="label">Borrow Date:</span>
                             <span class="value">{{ $borrowing->borrow_date->format('F j, Y') }}</span>
                         </div>
                         <div class="info-row">
-                            <span class="label">⏰ Due Date:</span>
+                            <span class="label">Due Date:</span>
                             <span class="value">{{ $borrowing->due_date->format('F j, Y') }}</span>
                         </div>
                     </div>

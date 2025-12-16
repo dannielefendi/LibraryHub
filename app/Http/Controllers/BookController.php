@@ -25,11 +25,12 @@ class BookController extends Controller
         // jumlah stock (total semua buku)
         $totalStock = Book::sum('stock');
 
+
         return view('books.index', compact(
             'totalBooks',
             'totalCategories',
             'totalStock',
-            'books'
+            'books',
         ));
 
     }
@@ -135,6 +136,9 @@ class BookController extends Controller
 
         return redirect()->route('books.index')->with('success', 'Data buku berhasil diperbarui!');
     }
+    
+    
+
 
     /**
      * Remove the specified resource from storage.
@@ -148,5 +152,12 @@ class BookController extends Controller
         $book->delete();
         return redirect()->route('books.index')->with('success', 'Buku berhasil dihapus!');
     }
+
+    public function showUserBook(Book $book)
+    {
+        // Bisa tambahkan logic user-only, misal cek stock
+        return view('user.show_book', compact('book'));
+    }
+
 
 }

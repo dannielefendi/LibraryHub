@@ -42,13 +42,14 @@
     <main>
         <!-- Page Header -->
         <div class="page-header">
-            <h1>📖 Book Collection</h1>
+            <h1 class="font-semibold fs-2">Book Collection</h1>
             <div class="header-buttons">
                 <a href="{{ route('books.create') }}" class="btn btn-primary">+ Add New Book</a>
                 <a href="{{ route('admin.borrowings') }}" class="btn btn-secondary">Manage Borrowings</a>
                 <a href="{{ route('manage.users') }}" class="btn btn-secondary">User List</a>
             </div>
         </div>
+
 
         <!-- Success Message -->
         @if(session('success'))
@@ -57,17 +58,33 @@
             </div>
         @endif
 
+        <!-- Stats -->
+        <div class="stats mb-5">
+            <div class="stat-card">
+                <div class="stat-number">{{ $totalBooks }}</div>
+                <div class="stat-label">Total Books</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ $totalStock }}</div>
+                <div class="stat-label">Total Stock</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ $totalCategories }}</div>
+                <div class="stat-label">Categories</div>
+            </div>
+        </div>
+
         <!-- Books Table -->
-        <div class="table-container">
+        <div class="table-container flex justify-center">
             <table>
                 <thead>
                     <tr>
-                        <th>Title</th>
-                        <th>Author</th>
-                        <th>Category</th>
-                        <th>Year</th>
-                        <th>Stock</th>
-                        <th>Actions</th>
+                        <th class="text-center">Title</th>
+                        <th class="text-center">Author</th>
+                        <th class="text-center">Category</th>
+                        <th class="text-center">Year</th>
+                        <th class="text-center">Stock</th>
+                        <th class="text-center">Actions</th>
                     </tr>
                 </thead>
 
@@ -90,11 +107,30 @@
                             </td>
 
                             <td class="px-4 py-2">{{ $book->year }}</td>
-                            <td class="px-4 py-2">{{ $book->stock }}</td>
+
+                            <td class="px-4 py-2">
+                                @if ($book->stock > 5)
+                                    <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-green-500 text-white font-semibold">
+                                        {{ $book->stock }}
+                                    </span>
+                                @elseif ($book->stock > 0)
+                                    <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-yellow-400 text-black font-semibold">
+                                        {{ $book->stock }}
+                                    </span>
+                                @else
+                                    <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-red-500 text-white font-bold">
+                                        Unavailable
+                                    </span>
+                                @endif
+                            </td>
+
+
+                            
+                            
 
                             <td class="px-4 py-2 text-center">
                                 <a href="{{ route('books.show', $book) }}"
-                                class="btn btn-info block mb-2">
+                                class="btn btn-primary flex w-full h-10 justify-center items-center mb-3">
                                     View
                                 </a>
 
@@ -128,21 +164,7 @@
         </div>
 
 
-        <!-- Stats -->
-        <div class="stats">
-            <div class="stat-card">
-                <div class="stat-number">{{ $totalBooks }}</div>
-                <div class="stat-label">Total Books</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">{{ $totalStock }}</div>
-                <div class="stat-label">Total Stock</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">{{ $totalCategories }}</div>
-                <div class="stat-label">Categories</div>
-            </div>
-        </div>
+        
     </main>
 </body>
 </html>

@@ -13,6 +13,7 @@ class Borrowing extends Model
     protected $casts = [
         'borrow_date' => 'datetime:Y-m-d H:i:s',
         'due_date'    => 'datetime:Y-m-d H:i:s',
+        'return_date' => 'datetime:Y-m-d H:i:s',
     ];
     protected $fillable = [
         'user_id',
