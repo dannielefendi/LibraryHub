@@ -9,29 +9,26 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link rel="stylesheet" href="{{ asset('css/admin/create_book.css') }}">
 </head>
-<body>
+<body class="bg-gray-100">
+
     <!-- Navigation -->
-    <nav>
-        <div class="nav-container">
-            <div class="logo">
-                📚 <span>Library Hub</span>
-            </div>
+    <nav class="bg-white shadow p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="logo text-xl font-bold">📚 Library Hub</div>
 
             <!-- User Dropdown -->
             <div class="user-menu" x-data="{ open: false }">
-                <button @click="open = !open" class="user-button">
+                <button @click="open = !open" class="flex items-center space-x-2">
                     <span>{{ Auth::user()->name }}</span>
-                    <span class="arrow" :class="{ 'rotate': open }">▼</span>
+                    <span :class="{ 'rotate-180': open }">▼</span>
                 </button>
 
-                <div x-show="open"
-                     @click.away="open = false"
-                     x-transition
-                     class="dropdown">
-                    <a href="{{ route('profile.edit') }}">Profile</a>
+                <div x-show="open" @click.away="open = false" x-transition
+                     class="absolute mt-2 right-4 bg-white shadow rounded p-2 w-40">
+                    <a href="{{ route('profile.edit') }}" class="block py-1 px-2 hover:bg-gray-100 rounded">Profile</a>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <button type="submit">Log Out</button>
+                        <button type="submit" class="w-full text-left py-1 px-2 hover:bg-gray-100 rounded">Log Out</button>
                     </form>
                 </div>
             </div>
@@ -39,96 +36,70 @@
     </nav>
 
     <!-- Main Content -->
-    <main>
-        <!-- Page Header -->
-        <div class="page-header">
-            <h1>➕ Add New Book</h1>
-        </div>
+    <main class="container mx-auto mt-8">
+        <h1 class="text-2xl font-bold mb-6">➕ Add New Book</h1>
 
-        <!-- Form Container -->
-        <div class="form-container">
+        <div class="bg-white shadow rounded-lg p-6">
             <form action="{{ route('books.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
-                <div class="form-grid">
-                    <!-- Title -->
-                    <div class="form-group">
-                        <label>Title</label>
-                        <input type="text" name="title" required>
+                <!-- Title -->
+                <div class="mb-4">
+                    <label class="block font-medium mb-1">Title</label>
+                    <input type="text" name="title" required class="w-full border rounded p-2">
+                </div>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
-                <form action="{{ route('books.store') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    <div class="mb-4">
-                        <label class="block text-gray-700">Title</label>
-                        <input type="text" name="title" class="form-input w-full" required>
+                <!-- Author -->
+                <div class="mb-4">
+                    <label class="block font-medium mb-1">Author</label>
+                    <input type="text" name="author" required class="w-full border rounded p-2">
+                </div>
 
-                    </div>
+                <!-- Year -->
+                <div class="mb-4">
+                    <label class="block font-medium mb-1">Year</label>
+                    <input type="number" name="year" required class="w-full border rounded p-2">
+                </div>
 
-                    <!-- Author -->
-                    <div class="form-group">
-                        <label>Author</label>
-                        <input type="text" name="author" required>
-                    </div>
+                <!-- Stock -->
+                <div class="mb-4">
+                    <label class="block font-medium mb-1">Stock</label>
+                    <input type="number" name="stock" required class="w-full border rounded p-2">
+                </div>
 
-                    <!-- Year -->
-                    <div class="form-group">
-                        <label>Year</label>
-                        <input type="number" name="year" required>
-                    </div>
+                <!-- Synopsis -->
+                <div class="mb-4">
+                    <label class="block font-medium mb-1">Synopsis</label>
+                    <textarea name="synopsis" rows="4" placeholder="Enter book synopsis..." class="w-full border rounded p-2"></textarea>
+                </div>
 
-                    <!-- Stock -->
-                    <div class="form-group">
-                        <label>Stock</label>
-                        <input type="number" name="stock" required>
-                    </div>
-
-                    <!-- Synopsis -->
-                    <div class="form-group full-width">
-                        <label>Synopsis</label>
-                        <textarea name="synopsis" rows="4" placeholder="Enter book synopsis..."></textarea>
-                    </div>
-
-                    <!-- Categories (Checkboxes) -->
-                    <div class="form-group full-width">
-                        <label>Categories</label>
-                        <div class="checkbox-grid">
-                            @foreach ($categories as $category)
-                                <label class="checkbox-label">
-                                    <input type="checkbox" name="categories[]" value="{{ $category->id }}">
-                                    <span>{{ $category->name }}</span>
-                                </label>
-                            @endforeach
-                        </div>
-                    </div>
-
-                    <!-- Cover Image -->
-                    <div class="form-group full-width">
-                        <label>Cover Image</label>
-                        <input type="file" name="image_cover" accept="image/*" required>
-                        <small class="helper-text">Upload book cover image (required)</small>
+                <!-- Categories -->
+                <div class="mb-4">
+                    <label class="block font-medium mb-1">Categories</label>
+                    <div class="grid grid-cols-2 gap-2">
+                        @foreach ($categories as $category)
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" name="categories[]" value="{{ $category->id }}">
+                            <span>{{ $category->name }}</span>
+                        </label>
+                        @endforeach
                     </div>
                 </div>
 
-                    <div class="mb-4">
-                        <label class="block text-gray-700">Cover Image</label>
-                        <input type="file" name="image_cover" class="form-input w-full" accept="image/*" required>
-                    </div>
+                <!-- Cover Image -->
+                <div class="mb-4">
+                    <label class="block font-medium mb-1">Cover Image</label>
+                    <input type="file" name="image_cover" accept="image/*" required class="w-full">
                 </div>
 
                 <!-- Form Buttons -->
-                <div class="form-buttons">
-                    <a href="{{ route('books.index') }}" class="btn btn-secondary">
-                        ← Back
-                    </a>
-                    <button type="submit" class="btn btn-primary">
-                        Create Book
-                    </button>
+                <div class="flex justify-between">
+                    <a href="{{ route('books.index') }}" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">← Back</a>
+                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Create Book</button>
                 </div>
             </form>
         </div>
     </main>
+
 </body>
 </html>
