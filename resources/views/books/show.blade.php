@@ -1,48 +1,121 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Book Details') }}
-        </h2>
-    </x-slot>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Details - Library Hub</title>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
-                <div class="flex">
-                    <div class="w-1/3">
-                        @if($book->image_cover)
-                            <img src="{{ asset('storage/' . $book->image_cover) }}" alt="Cover" class="w-full h-auto object-cover border">
-                        @else
-                            <div class="w-full h-64 bg-gray-200 flex items-center justify-center text-gray-500">No Image</div>
-                        @endif
-                    </div>
-                    <div class="w-2/3 pl-6">
-                        <h3 class="text-2xl font-bold">{{ $book->title }}</h3>
-                        <p class="text-lg text-gray-600">by {{ $book->author }}</p>
-                        <p class="mt-4"><strong>Year:</strong> {{ $book->year }}</p>
-                        <p><strong>Stock:</strong> {{ $book->stock }}</p>
-                        <p><strong>Categories:</strong>
-                            @if($book->categories->count() > 0)
-                                @foreach($book->categories as $category)
-                                    <span class="inline-block bg-gray-200 rounded-full px-2 py-1 text-xs font-semibold text-gray-700 mr-1">
-                                        {{ $category->name }}
-                                    </span>
-                                @endforeach
-                            @else
-                                -
-                            @endif
-                        </p>
-                        @if($book->synopsis)
-                            <p class="mt-4"><strong>Synopsis:</strong></p>
-                            <p>{{ $book->synopsis }}</p>
-                        @endif
-                    </div>
-                </div>
-                <div class="mt-6">
-                    <a href="{{ route('books.index') }}" class="btn btn-secondary">Back to List</a>
-                    <a href="{{ route('books.edit', $book) }}" class="btn btn-primary ml-2">Edit</a>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="{{ asset('css/admin/detail_book.css') }}">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">
+                📚 <span>Library Hub</span>
+            </div>
+
+            <!-- User Dropdown -->
+            <div class="user-menu" x-data="{ open: false }">
+                <button @click="open = !open" class="user-button">
+                    <span>{{ Auth::user()->name }}</span>
+                    <span class="arrow" :class="{ 'rotate': open }">▼</span>
+                </button>
+
+                <div x-show="open"
+                     @click.away="open = false"
+                     x-transition
+                     class="dropdown">
+                    <a href="{{ route('profile.edit') }}">Profile</a>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit">Log Out</button>
+                    </form>
                 </div>
             </div>
         </div>
-    </div>
-</x-app-layout>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1>📖 Book Details</h1>
+        </div>
+
+        <!-- Book Detail Card -->
+        <div class="detail-container">
+            <div class="detail-card">
+                <!-- Book Display -->
+                <div class="book-display">
+                    <!-- Cover Image -->
+                    <div class="book-cover">
+                        @if($book->image_cover)
+                            <img src="{{ asset('storage/' . $book->image_cover) }}" alt="{{ $book->title }} Cover">
+                        @else
+                            <div class="no-image">
+                                <span>📚</span>
+                                <p>No Image</p>
+                            </div>
+                        @endif
+                    </div>
+
+                    <!-- Book Information -->
+                    <div class="book-info">
+                        <h2 class="book-title">{{ $book->title }}</h2>
+                        <p class="book-author">by {{ $book->author }}</p>
+
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <span class="info-label">📅 Year</span>
+                                <span class="info-value">{{ $book->year }}</span>
+                            </div>
+
+                            <div class="info-item">
+                                <span class="info-label">📦 Stock</span>
+                                <span class="info-value stock-badge {{ $book->stock > 5 ? 'stock-high' : ($book->stock > 2 ? 'stock-medium' : 'stock-low') }}">
+                                    {{ $book->stock }}
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Categories -->
+                        <div class="categories-section">
+                            <span class="info-label">🏷️ Categories</span>
+                            <div class="categories-list">
+                                @if($book->categories->count() > 0)
+                                    @foreach($book->categories as $category)
+                                        <span class="category-badge">{{ $category->name }}</span>
+                                    @endforeach
+                                @else
+                                    <span class="no-category">No categories</span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <!-- Synopsis -->
+                        @if($book->synopsis)
+                            <div class="synopsis-section">
+                                <h3 class="synopsis-title">📝 Synopsis</h3>
+                                <p class="synopsis-text">{{ $book->synopsis }}</p>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <a href="{{ route('books.index') }}" class="btn btn-secondary">
+                        ← Back to List
+                    </a>
+                    <a href="{{ route('books.edit', $book) }}" class="btn btn-primary">
+                        ✏️ Edit Book
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

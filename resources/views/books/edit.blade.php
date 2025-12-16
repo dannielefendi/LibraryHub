@@ -5,13 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Book - Library Hub</title>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
-                {{-- ⚙️ GUNAKAN ROUTE UPDATE DAN KIRIM ID --}}
-                <form action="{{ route('books.update', $book->id) }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    @method('PUT')
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="{{ asset('css/admin/edit_books.css') }}">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">
+                📚 <span>Library Hub</span>
+            </div>
 
             <!-- User Dropdown -->
             <div class="user-menu" x-data="{ open: false }">
@@ -43,7 +47,7 @@
 
         <!-- Form Container -->
         <div class="form-container">
-            <form action="{{ route('books.update', $book->id) }}" method="POST">
+            <form action="{{ route('books.update', $book->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 
@@ -72,43 +76,41 @@
                         <input type="number" name="stock" value="{{ $book->stock }}" required>
                     </div>
 
-                    <div class="mb-4">
-                        <label class="block text-gray-700">Synopsis</label>
-                        <textarea name="synopsis" class="form-textarea w-full" rows="4">{{ $book->synopsis }}</textarea>
+                    <!-- Synopsis -->
+                    <div class="form-group full-width">
+                        <label>Synopsis</label>
+                        <textarea name="synopsis" rows="4" placeholder="Enter book synopsis...">{{ $book->synopsis }}</textarea>
                     </div>
 
-                    <div class="mb-4">
-                    <label class="block text-gray-700 font-medium mb-2">
-                        Categories
-                    </label>
-
-                    <div class="grid grid-cols-2 gap-2">
-                        @foreach ($categories as $category)
-                            <label for="category-{{ $category->id }}" class="inline-flex items-center">
-                                <input
-                                    id="category-{{ $category->id }}"
-                                    type="checkbox"
-                                    name="categories[]"
-                                    value="{{ $category->id }}"
-                                    {{ $book->categories->contains('id', $category->id) ? 'checked' : '' }}
-                                    class="form-checkbox"
-                                >
-                                <span class="ml-2">{{ $category->name }}</span>
-                            </label>
-                        @endforeach
+                    <!-- Categories (Checkboxes) -->
+                    <div class="form-group full-width">
+                        <label>Categories</label>
+                        <div class="checkbox-grid">
+                            @foreach ($categories as $category)
+                                <label class="checkbox-label">
+                                    <input
+                                        type="checkbox"
+                                        name="categories[]"
+                                        value="{{ $category->id }}"
+                                        {{ $book->categories->contains('id', $category->id) ? 'checked' : '' }}
+                                    >
+                                    <span>{{ $category->name }}</span>
+                                </label>
+                            @endforeach
+                        </div>
                     </div>
-                </div>
 
-
-                    <div class="mb-4">
-                        <label class="block text-gray-700">Cover Image</label>
+                    <!-- Cover Image -->
+                    <div class="form-group full-width">
+                        <label>Cover Image</label>
                         @if($book->image_cover)
-                            <div class="mb-2">
-                                <img src="{{ asset('storage/' . $book->image_cover) }}" alt="Current Cover" class="w-32 h-48 object-cover border">
+                            <div class="current-image">
+                                <img src="{{ asset('storage/' . $book->image_cover) }}" alt="Current Cover">
+                                <p class="image-label">Current Cover</p>
                             </div>
                         @endif
-                        <input type="file" name="image_cover" class="form-input w-full" accept="image/*">
-                        <small class="text-gray-500">Leave empty to keep current image</small>
+                        <input type="file" name="image_cover" accept="image/*">
+                        <small class="helper-text">Leave empty to keep current image</small>
                     </div>
                 </div>
 
