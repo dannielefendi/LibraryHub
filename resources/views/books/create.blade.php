@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add New Book - Library Hub</title>
 
-<<<<<<< HEAD
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link rel="stylesheet" href="{{ asset('css/admin/create_book.css') }}">
@@ -48,7 +47,7 @@
 
         <!-- Form Container -->
         <div class="form-container">
-            <form action="{{ route('books.store') }}" method="POST">
+            <form action="{{ route('books.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
                 <div class="form-grid">
@@ -56,6 +55,7 @@
                     <div class="form-group">
                         <label>Title</label>
                         <input type="text" name="title" required>
+<<<<<<< HEAD
 =======
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -66,6 +66,8 @@
                         <label class="block text-gray-700">Title</label>
                         <input type="text" name="title" class="form-input w-full" required>
 >>>>>>> 9c6506e (feat: add synopsis and image_cover to books table)
+=======
+>>>>>>> d4c4355 (redesign-profile)
                     </div>
 
                     <!-- Author -->
@@ -86,36 +88,33 @@
                         <input type="number" name="stock" required>
                     </div>
 
-                    <div class="mb-4">
-                        <label class="block text-gray-700">Synopsis</label>
-                        <textarea name="synopsis" class="form-textarea w-full" rows="4"></textarea>
+                    <!-- Synopsis -->
+                    <div class="form-group full-width">
+                        <label>Synopsis</label>
+                        <textarea name="synopsis" rows="4" placeholder="Enter book synopsis..."></textarea>
                     </div>
 
-                    <div class="mb-4">
-                        <label class="block text-gray-700">Categories</label>
-                        <div class="grid grid-cols-2 gap-2">
+                    <!-- Categories (Checkboxes) -->
+                    <div class="form-group full-width">
+                        <label>Categories</label>
+                        <div class="checkbox-grid">
                             @foreach ($categories as $category)
-                                <label class="inline-flex items-center">
-                                    <input type="checkbox" name="categories[]" value="{{ $category->id }}" class="form-checkbox">
-                                    <span class="ml-2">{{ $category->name }}</span>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="categories[]" value="{{ $category->id }}">
+                                    <span>{{ $category->name }}</span>
                                 </label>
                             @endforeach
                         </div>
                     </div>
+
+                    <!-- Cover Image -->
+                    <div class="form-group full-width">
+                        <label>Cover Image</label>
+                        <input type="file" name="image_cover" accept="image/*" required>
+                        <small class="helper-text">Upload book cover image (required)</small>
+                    </div>
                 </div>
 
-<<<<<<< HEAD
-                <!-- Form Buttons -->
-                <div class="form-buttons">
-                    <a href="{{ route('books.index') }}" class="btn btn-secondary">
-                        ← Back
-                    </a>
-                    <button type="submit" class="btn btn-primary">
-                        Create Book
-                    </button>
-                </div>
-            </form>
-=======
                     <div class="mb-4">
                         <label class="block text-gray-700">Cover Image</label>
                         <input type="file" name="image_cover" class="form-input w-full" accept="image/*" required>
@@ -133,7 +132,6 @@
                     </div>
                 </form>
             </div>
->>>>>>> 9c6506e (feat: add synopsis and image_cover to books table)
         </div>
     </main>
 </body>

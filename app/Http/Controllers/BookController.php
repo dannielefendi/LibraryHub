@@ -16,7 +16,22 @@ class BookController extends Controller
     {
         //
         $books = Book::with('categories')->get();
-        return view('books.index', compact('books'));
+        // jumlah buku
+        $totalBooks = Book::count();
+
+        // jumlah kategori
+        $totalCategories = Category::count();
+
+        // jumlah stock (total semua buku)
+        $totalStock = Book::sum('stock');
+
+        return view('books.index', compact(
+            'totalBooks',
+            'totalCategories',
+            'totalStock',
+            'books'
+        ));
+
     }
 
     /**
@@ -57,6 +72,7 @@ class BookController extends Controller
         if ($request->hasFile('image_cover')) {
             $data['image_cover'] = $request->file('image_cover')->store('book_covers', 'public');
         }
+
         $data['admin_id'] = auth()->id();
         $categories = $data['categories'];
         unset($data['categories']);
@@ -132,4 +148,5 @@ class BookController extends Controller
         $book->delete();
         return redirect()->route('books.index')->with('success', 'Buku berhasil dihapus!');
     }
+
 }

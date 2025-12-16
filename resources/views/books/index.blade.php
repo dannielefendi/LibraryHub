@@ -70,52 +70,55 @@
                         <th>Actions</th>
                     </tr>
                 </thead>
+
                 <tbody>
                     @forelse ($books as $book)
                         <tr>
-                            <th class="px-4 py-2 text-left">Title</th>
-                            <th class="px-4 py-2 text-left">Author</th>
-                            <th class="px-4 py-2 text-left">Category</th>
-                            <th class="px-4 py-2 text-left">Year</th>
-                            <th class="px-4 py-2 text-left">Stock</th>
-                            <th class="px-4 py-2 text-center">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-200">
-                        @foreach ($books as $book)
-                            <tr>
-                                <td class="px-4 py-2">{{ $book->title }}</td>
-                                <td class="px-4 py-2">{{ $book->author }}</td>
-                                <td class="px-4 py-2">
-                                    @if($book->categories->count() > 0)
-                                        @foreach($book->categories as $category)
-                                            <span class="inline-block bg-gray-200 rounded-full px-2 py-1 text-xs font-semibold text-gray-700 mr-1">
-                                                {{ $category->name }}
-                                            </span>
-                                        @endforeach
-                                    @else
-                                        -
-                                    @endif
-                                </td>
-                                <td class="px-4 py-2">{{ $book->year }}</td>
-                                <td class="px-4 py-2">{{ $book->stock }}</td>
-                                <td class="px-4 py-2 text-center">
-                                    <a href="{{ route('books.show', $book) }}" class="btn btn-info mr-2">View</a>
-                                    <a href="{{ route('books.edit', $book) }}"
-                                       class="btn btn-secondary">Edit</a>
-                                    <form action="{{ route('books.destroy', $book) }}" method="POST" style="display:inline-block;">
+                            <td class="px-4 py-2">{{ $book->title }}</td>
+                            <td class="px-4 py-2">{{ $book->author }}</td>
+
+                            <td class="px-4 py-2">
+                                @if ($book->categories->count() > 0)
+                                    @foreach ($book->categories as $category)
+                                        <span class="inline-block bg-gray-200 rounded-full px-2 py-1 text-xs font-semibold text-gray-700 mr-1">
+                                            {{ $category->name }}
+                                        </span>
+                                    @endforeach
+                                @else
+                                    -
+                                @endif
+                            </td>
+
+                            <td class="px-4 py-2">{{ $book->year }}</td>
+                            <td class="px-4 py-2">{{ $book->stock }}</td>
+
+                            <td class="px-4 py-2 text-center">
+                                <a href="{{ route('books.show', $book) }}"
+                                class="btn btn-info block mb-2">
+                                    View
+                                </a>
+
+                                <div class="grid grid-cols-2 gap-2">
+                                    <a href="{{ route('books.edit', $book) }}" class="btn btn-secondary flex w-full h-10 justify-center items-center">
+                                        Edit
+                                    </a>
+
+                                    <form action="{{ route('books.destroy', $book) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn-delete" onclick="return confirm('Delete this book?')">
+                                        <button type="submit"
+                                            class="btn-delete flex w-full h-10 justify-center items-center"
+                                            onclick="return confirm('Delete this book?')">
                                             Delete
                                         </button>
                                     </form>
                                 </div>
                             </td>
+
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" style="text-align: center; padding: 2rem; color: #94a3b8;">
+                            <td colspan="6" class="text-center py-6 text-gray-400">
                                 No books found.
                             </td>
                         </tr>
@@ -124,18 +127,19 @@
             </table>
         </div>
 
+
         <!-- Stats -->
         <div class="stats">
             <div class="stat-card">
-                <div class="stat-number">{{ $books->count() }}</div>
+                <div class="stat-number">{{ $totalBooks }}</div>
                 <div class="stat-label">Total Books</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number">{{ $books->sum('stock') }}</div>
+                <div class="stat-number">{{ $totalStock }}</div>
                 <div class="stat-label">Total Stock</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number">{{ $books->pluck('category.name')->unique()->count() }}</div>
+                <div class="stat-number">{{ $totalCategories }}</div>
                 <div class="stat-label">Categories</div>
             </div>
         </div>
