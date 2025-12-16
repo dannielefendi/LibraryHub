@@ -31,24 +31,53 @@
 
             <div class="row">
                 @foreach ($books as $book)
-                    <div class="col-md-3 mb-4">
-                        <div class="card h-100 shadow-sm">
+                    <div class="col-md-4 mb-3">
+                        <div class="card h-100 shadow-sm d-flex flex-column">
                             <div class="card-body">
-                                <h5 class="card-title">{{ $book->title }}</h5>
-                                <p class="card-text mb-1"><strong>Author:</strong> {{ $book->author }}</p>
-                                <p class="card-text mb-1"><strong>Year:</strong> {{ $book->year }}</p>
-                                <p class="card-text mb-1"><strong>Categories:</strong>
-                                    @if($book->categories->count() > 0)
-                                        @foreach($book->categories as $category)
-                                            <span class="badge badge-secondary">{{ $category->name }}</span>
-                                        @endforeach
-                                    @else
-                                        -
-                                    @endif
-                                </p>
-                                <p class="card-text mb-3"><strong>Stock:</strong> {{ $book->stock }}</p>
+                                <!-- Title -->
+                                <h5 class="text-2xl font-bold mb-6">
+                                    {{ $book->title }}
+                                </h5>
 
-                                <form action="{{ route('user.borrow') }}" method="POST">
+                                <!-- Content -->
+                                <div class="flex flex-col md:flex-row gap-6 items-start">
+                                    <!-- Image (Left) -->
+                                    <div class="w-48 flex-shrink-0">
+                                        <img src="{{ $book->image_cover 
+                                                ? asset('storage/' . $book->image_cover) 
+                                                : asset('images/no-cover.png') }}"
+                                            alt="{{ $book->title }}"
+                                            class="w-full rounded-lg shadow-md">
+                                    </div>
+
+                                    <!-- Details (Right) -->
+                                    <div class="flex-1">
+                                        <p class="mb-1"><strong>Author:</strong> {{ $book->author }}</p>
+                                        <p class="mb-1"><strong>Year:</strong> {{ $book->year }}</p>
+
+                                        <p class="mb-1">
+                                            <strong>Categories:</strong>
+                                            @if ($book->categories->count())
+                                                @foreach ($book->categories as $category)
+                                                    <span class="inline-block bg-gray-200 text-gray-700 text-xs px-2 py-1 rounded mr-1">
+                                                        {{ $category->name }}
+                                                    </span>
+                                                @endforeach
+                                            @else
+                                                -
+                                            @endif
+                                        </p>
+
+                                        <p class="mb-1">
+                                            <strong>Synopsis:</strong><br>
+                                            {{ $book->synopsis }}
+                                        </p>
+
+                                        <p class="mb-1"><strong>Stock:</strong> {{ $book->stock }}</p>
+                                    </div>
+                                </div>
+
+                                <form action="{{ route('user.borrow') }}" method="POST" class="mt-auto">
                                     @csrf
                                     <input type="hidden" name="book_id" value="{{ $book->id }}">
                                     <button type="submit" class="btn btn-primary w-100">

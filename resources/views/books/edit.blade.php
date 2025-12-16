@@ -72,32 +72,33 @@
                         <input type="number" name="stock" value="{{ $book->stock }}" required>
                     </div>
 
-<<<<<<< HEAD
-                    <!-- Category -->
-                    <div class="form-group full-width">
-                        <label>Category</label>
-                        <select name="category_id" required>
-                            <option value="">-- Select Category --</option>
-=======
                     <div class="mb-4">
                         <label class="block text-gray-700">Synopsis</label>
                         <textarea name="synopsis" class="form-textarea w-full" rows="4">{{ $book->synopsis }}</textarea>
                     </div>
 
                     <div class="mb-4">
-                        <label class="block text-gray-700">Categories</label>
-                        <div class="grid grid-cols-2 gap-2">
->>>>>>> patch
-                            @foreach ($categories as $category)
-                                <label class="inline-flex items-center">
-                                    <input type="checkbox" name="categories[]" value="{{ $category->id }}" 
-                                           {{ $book->categories->pluck('id')->contains($category->id) ? 'checked' : '' }} 
-                                           class="form-checkbox">
-                                    <span class="ml-2">{{ $category->name }}</span>
-                                </label>
-                            @endforeach
-                        </div>
+                    <label class="block text-gray-700 font-medium mb-2">
+                        Categories
+                    </label>
+
+                    <div class="grid grid-cols-2 gap-2">
+                        @foreach ($categories as $category)
+                            <label for="category-{{ $category->id }}" class="inline-flex items-center">
+                                <input
+                                    id="category-{{ $category->id }}"
+                                    type="checkbox"
+                                    name="categories[]"
+                                    value="{{ $category->id }}"
+                                    {{ $book->categories->contains('id', $category->id) ? 'checked' : '' }}
+                                    class="form-checkbox"
+                                >
+                                <span class="ml-2">{{ $category->name }}</span>
+                            </label>
+                        @endforeach
                     </div>
+                </div>
+
 
                     <div class="mb-4">
                         <label class="block text-gray-700">Cover Image</label>
