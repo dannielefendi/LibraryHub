@@ -97,7 +97,11 @@ class BorrowingController extends Controller
         // Check if user already borrowed this book and hasn't returned it
         $existing = Borrowing::where('user_id', Auth::id())
             ->where('book_id', $book->id)
+<<<<<<< HEAD
             ->whereIn('status', ['Borrowed', 'Late'])
+=======
+            ->where('status', 'Borrowed')
+>>>>>>> backup-main
             ->first();
 
         if ($existing) {
@@ -114,7 +118,10 @@ class BorrowingController extends Controller
             return back()->with('error', 'You can only borrow a maximum of 3 books.');
         }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> backup-main
         $fine_remaining = Borrowing::where('user_id', Auth::id())
             ->where('fine_remaining', '>', 0)
             ->sum('fine_remaining');

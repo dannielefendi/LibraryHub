@@ -5,9 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile - Library Hub</title>
 
+<<<<<<< HEAD
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link rel="stylesheet" href="{{ asset('css/admin/profile._admin.css') }}">
+=======
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
+                <div class="max-w-xl">
+                    @include('profile.partials.update-profile-information-form')
+                </div>
+            </div>
+            
+            <div class="mb-4 p-4 bg-red-100 text-red-800 rounded">
+                <strong>Total Denda Tersisa:</strong>
+                Rp {{ number_format($totalFineRemaining, 0, ',', '.') }}
+            </div>
+
+>>>>>>> backup-main
 
 </head>
 <body>

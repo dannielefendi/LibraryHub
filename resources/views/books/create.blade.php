@@ -55,8 +55,7 @@
                     <div class="form-group">
                         <label>Title</label>
                         <input type="text" name="title" required>
-<<<<<<< HEAD
-=======
+
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
@@ -65,9 +64,7 @@
                     <div class="mb-4">
                         <label class="block text-gray-700">Title</label>
                         <input type="text" name="title" class="form-input w-full" required>
->>>>>>> 9c6506e (feat: add synopsis and image_cover to books table)
-=======
->>>>>>> d4c4355 (redesign-profile)
+
                     </div>
 
                     <!-- Author -->
@@ -119,19 +116,18 @@
                         <label class="block text-gray-700">Cover Image</label>
                         <input type="file" name="image_cover" class="form-input w-full" accept="image/*" required>
                     </div>
+                </div>
 
-                    <div class="flex justify-between mt-6">
-                        <a href="{{ route('books.index') }}"
-                           class="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded">
-                            ← Back
-                        </a>
-
-                        <button type="submit" class="btn btn-success bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
-                            Create
-                        </button>
-                    </div>
-                </form>
-            </div>
+                <!-- Form Buttons -->
+                <div class="form-buttons">
+                    <a href="{{ route('books.index') }}" class="btn btn-secondary">
+                        ← Back
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        Create Book
+                    </button>
+                </div>
+            </form>
         </div>
     </main>
 </body>

@@ -112,20 +112,18 @@
                         <input type="file" name="image_cover" accept="image/*">
                         <small class="helper-text">Leave empty to keep current image</small>
                     </div>
+                </div>
 
-                    <div class="flex justify-between mt-6">
-                        <a href="{{ route('books.index') }}"
-                           class="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded">
-                            ← Back
-                        </a>
-
-                        <button type="submit"
-                            class="btn btn-success bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
-                            Update
-                        </button>
-                    </div>
-                </form>
-            </div>
+                <!-- Form Buttons -->
+                <div class="form-buttons">
+                    <a href="{{ route('books.index') }}" class="btn btn-secondary">
+                        ← Back
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        Update Book
+                    </button>
+                </div>
+            </form>
         </div>
     </main>
 </body>

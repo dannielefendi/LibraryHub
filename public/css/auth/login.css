@@ -1,4 +1,8 @@
-:root{
+
+
+/* Styles for login page (migrated from Tailwind utilities) */
+
+:root {
     --card-radius: 2rem;
     --card-padding: 2rem;
     --bg-start: #dff6ff;
