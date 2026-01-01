@@ -108,7 +108,6 @@ class BookController extends Controller
      */
     public function update(Request $request, Book $book)
     {
-        //
         $request->validate([
             'title' => 'required',
             'author' => 'required',
@@ -122,11 +121,20 @@ class BookController extends Controller
 
         $data = $request->all();
         if ($request->hasFile('image_cover')) {
-            // Hapus gambar lama jika ada
-            if ($book->image_cover) {
-                Storage::disk('public')->delete($book->image_cover);
+
+            if ($book->image_cover && file_exists(public_path($book->image_cover))) {
+                unlink(public_path($book->image_cover));
             }
-            $data['image_cover'] = $request->file('image_cover')->store('book_covers', 'public');
+
+            $file = $request->file('image_cover');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+
+            $file->move(
+                public_path('storage/book_covers'),
+                $fileName
+            );
+
+            $data['image_cover'] = 'book_covers/' . $fileName;
         }
 
         $categories = $data['categories'];
@@ -136,13 +144,7 @@ class BookController extends Controller
 
         return redirect()->route('books.index')->with('success', 'Data buku berhasil diperbarui!');
     }
-    
-    
 
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Book $book)
     {
         //

@@ -53,7 +53,7 @@
                     <!-- Cover Image -->
                     <div class="book-cover">
                         @if($book->image_cover)
-                            <img src="{{ asset('storage/' . $book->image_cover) }}" alt="{{ $book->title }} Cover">
+                            <img src="{{ url('storage/' . $book->image_cover) }}" alt="{{ $book->title }} Cover">
                         @else
                             <div class="no-image">
                                 <span>📚</span>
