@@ -108,7 +108,7 @@
                         <label>Cover Image</label>
                         @if($book->image_cover)
                             <div class="current-image">
-                                <img src="{{ asset('storage/' . $book->image_cover) }}" alt="Current Cover">
+                                <img src="{{ url('storage/' . $book->image_cover) }}" alt="Current Cover">
                                 <p class="image-label">Current Cover</p>
                             </div>
                         @endif
