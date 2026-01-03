@@ -3,7 +3,7 @@
         <div class="row mb-10">
             <div class="col-12">
                 <div class="overflow-hidden rounded-3xl bg-white shadow-xl">
-                <div class="bg-gradient-to-r from-sky-600 to-cyan-500 p-6 text-white">
+                <div class="bg-gradient-to-r from-sky-600 to-cyan-500 p-6 text-black">
                         <h1 class="fs-2 fw-bold">
                               Hi, {{ Auth::user()->name }}
                         </h1>
@@ -41,10 +41,10 @@
                 {{ session('error') }}
             </div>
         @endif
-    </div>        
-    
+    </div>
 
-    <div class="container">
+
+    <div class="container mt-4">
             <div class="row">
             <div class="col-12">
                 <div class="d-flex align-items-center justify-content-between">
@@ -52,16 +52,16 @@
                          Book <span class="text-blue-700">List</span>
                     </h1>
 
-                    
+
                     <form action="{{ route('user.dashboard') }}" method="GET" class="flex gap-2">
-                        <input type="text" name="search" value="{{ request('search') }}" 
+                        <input type="text" name="search" value="{{ request('search') }}"
                             placeholder="Search by title or author"
                             class="form-input w-full px-3 py-2 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-sky-500">
                         <button type="submit" class="btn btn-primary">
                             Search
                         </button>
                     </form>
-                    
+
                 </div>
             </div>
 
@@ -80,8 +80,8 @@
                     @endphp
 
 
-                    <a href="{{ route('user.dashboard') }}" 
-                    class="px-3 py-1 rounded border 
+                    <a href="{{ route('user.dashboard') }}"
+                    class="px-3 py-1 rounded border
                             {{ empty($activeCategories) ? 'bg-blue-500 text-white' : 'bg-white border-gray-300' }}">
                         All
                     </a>
@@ -89,13 +89,13 @@
                     @foreach($categories as $category)
                         @php
                             $isActive = in_array($category->id, $activeCategories);
-                            $newActive = $isActive 
+                            $newActive = $isActive
                                 ? array_diff($activeCategories, [$category->id])
                                 : array_merge($activeCategories, [$category->id]);
                         @endphp
 
-                        <a href="{{ route('user.dashboard', ['categories' => $newActive]) }}" 
-                        class="px-3 py-1 rounded border 
+                        <a href="{{ route('user.dashboard', ['categories' => $newActive]) }}"
+                        class="px-3 py-1 rounded border
                                 {{ $isActive ? 'bg-blue-500 text-white' : 'bg-white border-gray-300' }}">
                             {{ $category->name }}
                         </a>
@@ -125,7 +125,7 @@
                                 style="max-height: 220px; object-fit: cover;"
                             >
                         </div>
-                        <a href="{{ route('user.books.show', $book) }}" 
+                        <a href="{{ route('user.books.show', $book) }}"
                             class="w-100 mt-auto text-blue-600 font-semibold underline
                                 transition-transform transform hover:-translate-y-1 text-center">
                             View
@@ -190,4 +190,4 @@
     </div>
 </x-app-layout>
 
-        
+

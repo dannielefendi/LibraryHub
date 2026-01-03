@@ -1,7 +1,7 @@
 <x-app-layout>
     <div class="overflow-hidden rounded-3xl bg-white shadow-xl">
 
-        <div class="bg-gradient-to-r from-sky-600 to-cyan-500 p-6 text-white">
+        <div class="bg-gradient-to-r from-sky-600 to-cyan-500 p-6 text-black">
             <h1 class="fs-2 fw-bold">
                 👋🏻 Hi, {{ Auth::user()->name }}
             </h1>
@@ -15,12 +15,12 @@
                 @foreach ($borrowings as $borrow)
                     <div class="col-md-3 mb-4">
                         <div class="card h-100 shadow-sm rounded-3">
-                            <div class="card-body d-flex flex-column">
+                            <div class="card-body d-flex flex-column mt-4">
                                 <h5 class="fs-4 fw-semibold text-gray-800 mb-4">{{ $borrow->book->title }}</h5>
                                 <p class="text-sm text-muted">
                                     <strong>Borrow Date:</strong> {{ $borrow->borrow_date->format('F j, Y') }}
                                 </p>
-                            
+
                                 @if ($borrow->return_date)
                                     <p class="text-sm text-muted">
                                         <strong>Due Date:</strong> {{ $borrow->due_date->format('F j, Y') }}
@@ -39,7 +39,7 @@
                                     <strong>Status:</strong>
                                     <span class="px-1 py-1 rounded text-black text-xs
                                         @if ($borrow->status === 'Late') bg-yellow-500
-                                        @elseif ($borrow->status === 'Borrowed') bg-blue-500 text-white
+                                        @elseif ($borrow->status === 'Borrowed') bg-blue-500
                                         @elseif ($borrow->status === 'Unavailable') bg-red-500
                                         @elseif ($borrow->status === 'Returned') bg-green-500
                                         @endif
@@ -70,5 +70,5 @@
         </div>
 
     </div>
-       
+
 </x-app-layout>

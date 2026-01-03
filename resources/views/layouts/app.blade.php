@@ -18,6 +18,9 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 
         <!-- <link rel="stylesheet" href="{{ asset('css/admin/manage_borowing.css') }}"> -->
+
+        <!-- User Custom CSS -->
+        <link rel="stylesheet" href="{{ asset('css/user/profile._user.css') }}">
         @stack('styles')
     </head>
     <body class="font-sans antialiased">
