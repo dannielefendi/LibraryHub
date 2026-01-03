@@ -43,7 +43,7 @@
 
     <!-- Main Content -->
     <main>
-        @include('components.notif-validate')
+        <!-- @include('components.notif-validate') -->
         <!-- Page Header -->
         <div class="page-header">
             <h1><i class="bi bi-plus-lg"></i> Add New Book</h1>
@@ -58,51 +58,95 @@
                     <!-- Title -->
                     <div class="form-group">
                         <label>Title</label>
-                        <input type="text" name="title" value="{{ Session::get('title') }}">
+                        <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title" value="{{ old('title') }}">
+                        @error('title')
+                            <div class="invalid-feedback" role="alert">
+                                {{ $message }}
+                            </div>
+                        @enderror
                     </div>
 
                     <!-- Author -->
                     <div class="form-group">
                         <label>Author</label>
-                        <input type="text" name="author" value="{{ Session::get('author') }}">
+                        <input type="text" class="form-control @error('author') is-invalid @enderror" id="author" name="author" value="{{ old('author') }}">
+                        @error('author')
+                            <div class="invalid-feedback" role="alert">
+                                {{ $message }}
+                            </div>
+                        @enderror
                     </div>
 
                     <!-- Year -->
                     <div class="form-group">
                         <label>Year</label>
-                        <input type="number" name="year" value="{{ Session::get('year') }}">
+                        <input type="number" class="form-control @error('year') is-invalid @enderror" id="year" name="year" value="{{ old('year') }}">
+                        @error('year')
+                            <div class="invalid-feedback" role="alert">
+                                {{ $message }}
+                            </div>
+                        @enderror
                     </div>
 
                     <!-- Stock -->
                     <div class="form-group">
                         <label>Stock</label>
-                        <input type="number" name="stock" value="{{ Session::get('stock') }}">
+                        <input type="number" class="form-control @error('stock') is-invalid @enderror" id="stock" name="stock" value="{{ old('stock') }}">
+                        @error('stock')
+                            <div class="invalid-feedback" role="alert">
+                                {{ $message }}
+                            </div>
+                        @enderror
                     </div>
 
                     <!-- Synopsis -->
                     <div class="form-group full-width">
                         <label>Synopsis</label>
-                        <textarea name="synopsis" rows="4" placeholder="Enter book synopsis...">{{ Session::get('synopsis') }}</textarea>
+                        <textarea class="form-control @error('synopsis') is-invalid @enderror" id="synopsis" name="synopsis" rows="4" placeholder="Enter book synopsis...">{{ old('synopsis') }}</textarea>
+                    
+                        @error('synopsis')
+                            <div class="invalid-feedback" role="alert">
+                                {{ $message }}
+                            </div>
+                        @enderror
                     </div>
 
                     <!-- Categories (Checkboxes) -->
                     <div class="form-group full-width">
                         <label>Categories</label>
-                        <div class="checkbox-grid">
+
+                        <div class="checkbox-grid @error('categories') is-invalid @enderror">
                             @foreach ($categories as $category)
                                 <label class="checkbox-label">
-                                    <input type="checkbox" name="categories[]" value="{{ $category->id }}">
+                                    <input type="checkbox"
+                                        name="categories[]"
+                                        value="{{ $category->id }}"
+                                        {{ in_array($category->id, old('categories', [])) ? 'checked' : '' }}>
                                     <span>{{ $category->name }}</span>
                                 </label>
                             @endforeach
                         </div>
+
+                        @error('categories')
+                            <div class="invalid-feedback" role="alert">
+                                {{ $message }}
+                            </div>
+                        @enderror
                     </div>
+
 
                     <!-- Cover Image -->
                     <div class="form-group full-width">
                         <label>Cover Image</label>
-                        <input type="file" name="image_cover" accept="image/*">
+                        <input type="file" class="form-control @error('image_cover') is-invalid @enderror" id="image_cover" name="image_cover" value="{{ old('image_cover') }} " accept="image/*">
                         <small class="helper-text">Upload book cover image (required)</small>
+                    
+                        @error('image_cover')
+                            <div class="invalid-feedback" role="alert">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    
                     </div>
                 </div>
 

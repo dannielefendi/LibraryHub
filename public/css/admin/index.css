@@ -11,28 +11,6 @@ body {
     min-height: 100vh;
 }
 
-/* Navigation */
-nav {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(148, 163, 184, 0.2);
-    padding: 1rem 2rem;
-}
-
-.nav-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.logo {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #1e293b;
-}
-
 /* User Menu */
 .user-menu {
     position: relative;
@@ -95,11 +73,6 @@ nav {
 }
 
 /* Main Content */
-main {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem;
-}
 
 /* Page Header */
 .page-header {

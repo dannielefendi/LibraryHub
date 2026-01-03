@@ -6,32 +6,11 @@
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     background: linear-gradient(to bottom, #7dd3fc, #bae6fd, #e0f2fe);
     min-height: 100vh;
 }
 
-/* Navigation */
-nav {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(148, 163, 184, 0.2);
-    padding: 1rem 2rem;
-}
-
-.nav-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.logo {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #1e293b;
-}
 
 /* User Menu */
 .user-menu {
@@ -95,11 +74,6 @@ nav {
 }
 
 /* Main Content */
-main {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem;
-}
 
 /* Page Header */
 .page-header {
@@ -118,7 +92,7 @@ main {
     border-radius: 1rem;
     padding: 2rem;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    max-width: 800px;
+    max-width: 100%;
 }
 
 /* Form Grid */

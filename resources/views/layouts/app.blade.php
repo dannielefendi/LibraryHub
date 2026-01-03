@@ -16,9 +16,12 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+        <!-- <link rel="stylesheet" href="{{ asset('css/admin/manage_borowing.css') }}"> -->
+        @stack('styles')
     </head>
     <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
+        <div class="min-h-screen bg-gray-100 dark:bg-gray-900 flex flex-col">
             @include('layouts.navigation')
 
             <!-- Page Heading -->
@@ -30,11 +33,20 @@
                 </header>
             @endisset
 
-            <!-- Page Content -->
-            <main class="bootstrap">
-                {{ $slot }}
-                {{-- @yield('content') --}}
-            </main>
+            <div class="flex-1 bg-cover bg-center bg-no-repeat flex flex-col"
+                style="background-image: url('{{ asset('img/background1.png') }}');">
+
+                <!-- Page Content -->
+                <main class="flex-1 bootstrap">
+                    <div class="max-w-7xl mx-auto px-6 py-8">
+                        {{ $slot }}
+                    </div>
+                </main>
+
+                <footer class="py-4 text-center text-sm text-gray-500">
+                    <p>&copy; {{ date('Y') }} <span class="font-semibold text-gray-700">LibraryHub</span>. Read, Learn, Grow.</p>
+                </footer>
+            </div>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     </body>

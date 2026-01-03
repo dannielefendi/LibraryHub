@@ -16,14 +16,12 @@ class BookController extends Controller
     public function index()
     {
         //
-        $books = Book::with('categories')->get();
-        // jumlah buku
+        $books = Book::with('categories')
+            ->paginate(15);
+
+      
         $totalBooks = Book::count();
-
-        // jumlah kategori
         $totalCategories = Category::count();
-
-        // jumlah stock (total semua buku)
         $totalStock = Book::sum('stock');
 
 
@@ -52,20 +50,20 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        Session::flash('title', $request->title);
-        Session::flash('author', $request->author);
-        Session::flash('year', $request->year);
-        Session::flash('stock', $request->stock);
-        Session::flash('synopsis', $request->synopsis);
-        Session::flash('categories', $request->categories);
-        Session::flash('image_cover', $request->image_cover);
+        // Session::flash('title', $request->title);
+        // Session::flash('author', $request->author);
+        // Session::flash('year', $request->year);
+        // Session::flash('stock', $request->stock);
+        // Session::flash('synopsis', $request->synopsis);
+        // Session::flash('categories', $request->categories);
+        // Session::flash('image_cover', $request->image_cover);
 
-        $request->validate([
+        $data=$request->validate([
             'title' => 'required',
             'author' => 'required',
             'year' => 'required|integer',
             'stock' => 'required|integer',
-            'synopsis' => 'nullable|string',
+            'synopsis' => 'required|nullable|string',
             'categories' => 'required|array|min:1',
             'categories.*' => 'exists:categories,id',
             'image_cover' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -76,7 +74,8 @@ class BookController extends Controller
             'year.numeric' => 'Year must be numeric!',
             'stock.required' => 'Stock cannot be empty!',
             'stock.numeric' => 'Stock must be numeric!',
-            'synopsis.string' => 'Stock must be character!',
+            'synopsis.required' => 'Synopsis cannot be empty!',
+            'synopsis.string' => 'Synopsis must be character!',
             'categories.required' => 'Please select at least one category!',
             'categories.array' => 'Invalid categories format!',
             'categories.min' => 'Please select at least one category!',
@@ -90,9 +89,16 @@ class BookController extends Controller
         // Book::create($request->all());
 
         // Menyimpan data ke database
-        $data = $request->all();
         if ($request->hasFile('image_cover')) {
-            $data['image_cover'] = $request->file('image_cover')->store('book_covers', 'public');
+            $data['image_cover'] = $request->file('image_cover');
+            $fileName = time() . '_' . $data['image_cover']->getClientOriginalName();
+
+            $data['image_cover']->move(
+                public_path('storage/book_covers'),
+                $fileName
+            );
+
+            $data['image_cover'] = 'book_covers/' . $fileName;
         }
 
         $data['admin_id'] = auth()->id();
@@ -129,20 +135,20 @@ class BookController extends Controller
      */
     public function update(Request $request, Book $book)
     {
-        Session::flash('title', $request->title);
-        Session::flash('author', $request->author);
-        Session::flash('year', $request->year);
-        Session::flash('stock', $request->stock);
-        Session::flash('synopsis', $request->synopsis);
-        Session::flash('categories', $request->categories);
-        Session::flash('image_cover', $request->image_cover);
+        // Session::flash('title', $request->title);
+        // Session::flash('author', $request->author);
+        // Session::flash('year', $request->year);
+        // Session::flash('stock', $request->stock);
+        // Session::flash('synopsis', $request->synopsis);
+        // Session::flash('categories', $request->categories);
+        // Session::flash('image_cover', $request->image_cover);
 
         $request->validate([
             'title' => 'required',
             'author' => 'required',
             'year' => 'required|integer',
             'stock' => 'required|integer',
-            'synopsis' => 'nullable|string',
+            'synopsis' => 'required|nullable|string',
             'categories' => 'required|array|min:1',
             'categories.*' => 'exists:categories,id',
             'image_cover' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -153,7 +159,8 @@ class BookController extends Controller
             'year.numeric' => 'Year must be numeric!',
             'stock.required' => 'Stock cannot be empty!',
             'stock.numeric' => 'Stock must be numeric!',
-            'synopsis.string' => 'Stock must be character!',
+            'synopsis.required' => 'Synopsis cannot be empty!',
+            'synopsis.string' => 'Synopsis must be character!',
             'categories.required' => 'Please select at least one category!',
             'categories.array' => 'Invalid categories format!',
             'categories.min' => 'Please select at least one category!',
@@ -199,7 +206,6 @@ class BookController extends Controller
 
     public function showUserBook(Book $book)
     {
-        // Bisa tambahkan logic user-only, misal cek stock
         return view('user.show_book', compact('book'));
     }
 
