@@ -7,6 +7,7 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" integrity="sha384-tViUnnbYAV00FLIhhi3v/dWt3Jxw4gZQcNoSCxCIFNJVCx7/D55/wXsrNIRANwdD" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('css/admin/profile._admin.css') }}">
 
 </head>
@@ -16,7 +17,7 @@
 <nav>
     <div class="nav-container">
         <div class="logo">
-            📚 <span>Library Hub</span>
+            <i class="bi bi-book"></i> <span>Library Hub</span>
         </div>
 
         <div class="user-menu" x-data="{ open: false }">
@@ -38,7 +39,7 @@
 
 <main class="container my-5" x-data="{ tab: 'profile' }">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="h3">👤 Profile</h1>
+        <h1 class="h3"><i class="bi bi-person-circle"></i> Profile</h1>
 
         @if (Auth::user()->role === 'admin')
             <a href="{{ route('books.index') }}" class="btn btn-secondary">
@@ -102,13 +103,13 @@
             <div class="card shadow-sm border-0 pt-3">
                 <div class="card-body">
 
-                    <div x-show="tab==='profile'" x-transition> 
-                        <h5 class="mb-1">Profile Information</h5> 
+                    <div x-show="tab==='profile'" x-transition>
+                        <h5 class="mb-1">Profile Information</h5>
                         <p class="text-muted mb-4">
-                            Update your account's profile information and email address. 
-                        </p> 
-                        
-                        @include('profile.partials.update-profile-information-form') 
+                            Update your account's profile information and email address.
+                        </p>
+
+                        @include('profile.partials.update-profile-information-form')
                     </div>
 
 

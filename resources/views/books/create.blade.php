@@ -5,16 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add New Book - Library Hub</title>
 
-    <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link rel="stylesheet" href="{{ asset('css/admin/create_book.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" integrity="sha384-tViUnnbYAV00FLIhhi3v/dWt3Jxw4gZQcNoSCxCIFNJVCx7/D55/wXsrNIRANwdD" crossorigin="anonymous">
+
+
 </head>
 <body>
     <!-- Navigation -->
     <nav>
         <div class="nav-container">
             <div class="logo">
-                📚 <span>Library Hub</span>
+                <i class="bi bi-book"></i> <span>Library Hub</span>
             </div>
 
             <!-- User Dropdown -->
@@ -40,9 +43,10 @@
 
     <!-- Main Content -->
     <main>
+        @include('components.notif-validate')
         <!-- Page Header -->
         <div class="page-header">
-            <h1>➕ Add New Book</h1>
+            <h1><i class="bi bi-plus-lg"></i> Add New Book</h1>
         </div>
 
         <!-- Form Container -->
@@ -54,31 +58,31 @@
                     <!-- Title -->
                     <div class="form-group">
                         <label>Title</label>
-                        <input type="text" name="title" required>
+                        <input type="text" name="title" value="{{ Session::get('title') }}">
                     </div>
 
                     <!-- Author -->
                     <div class="form-group">
                         <label>Author</label>
-                        <input type="text" name="author" required>
+                        <input type="text" name="author" value="{{ Session::get('author') }}">
                     </div>
 
                     <!-- Year -->
                     <div class="form-group">
                         <label>Year</label>
-                        <input type="number" name="year" required>
+                        <input type="number" name="year" value="{{ Session::get('year') }}">
                     </div>
 
                     <!-- Stock -->
                     <div class="form-group">
                         <label>Stock</label>
-                        <input type="number" name="stock" required>
+                        <input type="number" name="stock" value="{{ Session::get('stock') }}">
                     </div>
 
                     <!-- Synopsis -->
                     <div class="form-group full-width">
                         <label>Synopsis</label>
-                        <textarea name="synopsis" rows="4" placeholder="Enter book synopsis..."></textarea>
+                        <textarea name="synopsis" rows="4" placeholder="Enter book synopsis...">{{ Session::get('synopsis') }}</textarea>
                     </div>
 
                     <!-- Categories (Checkboxes) -->
@@ -97,7 +101,7 @@
                     <!-- Cover Image -->
                     <div class="form-group full-width">
                         <label>Cover Image</label>
-                        <input type="file" name="image_cover" accept="image/*" required>
+                        <input type="file" name="image_cover" accept="image/*">
                         <small class="helper-text">Upload book cover image (required)</small>
                     </div>
                 </div>
@@ -114,5 +118,6 @@
             </form>
         </div>
     </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

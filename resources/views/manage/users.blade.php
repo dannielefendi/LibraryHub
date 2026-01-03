@@ -7,6 +7,7 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" integrity="sha384-tViUnnbYAV00FLIhhi3v/dWt3Jxw4gZQcNoSCxCIFNJVCx7/D55/wXsrNIRANwdD" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('css/admin/user_list.css') }}">
 </head>
 <body>
@@ -14,7 +15,7 @@
     <nav>
         <div class="nav-container">
             <div class="logo">
-                📚 <span>Library Hub</span>
+                <i class="bi bi-book"></i> <span>Library Hub</span>
             </div>
 
             <!-- User Dropdown -->
@@ -42,7 +43,7 @@
     <main>
         <!-- Page Header -->
         <div class="page-header">
-            <h1>👥 Library Users</h1>
+            <h1><i class="bi bi-people-fill"></i> Library Users</h1>
             <a href="{{ route('books.index') }}" class="btn btn-secondary">← Back to Books</a>
         </div>
 
@@ -56,14 +57,14 @@
                             <h2>{{ $user->name }}</h2>
                             <div class="user-meta">
                                 <span class="user-id">ID: {{ $user->id }}</span>
-                                <span class="user-email">📧 {{ $user->email }}</span>
+                                <span class="user-email"><i class="bi bi-envelope-at-fill"></i> {{ $user->email }}</span>
                             </div>
                         </div>
                     </div>
 
                     <!-- User Details -->
                     <div class="user-details">
-                        <p class="join-date">📅 Joined On: {{ $user->created_at->format('F j, Y') }}</p>
+                        <p class="join-date"><i class="bi bi-calendar-check-fill"></i> Joined On: {{ $user->created_at->format('F j, Y') }}</p>
 
                         @if($user->borrow->count() > 0)
                             <p class="borrow-count">📚 Borrowing Items: <strong>{{ $user->borrow->count() }}</strong></p>

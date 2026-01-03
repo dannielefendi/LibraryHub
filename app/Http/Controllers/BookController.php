@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Book;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 
 class BookController extends Controller
@@ -51,7 +52,14 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Session::flash('title', $request->title);
+        Session::flash('author', $request->author);
+        Session::flash('year', $request->year);
+        Session::flash('stock', $request->stock);
+        Session::flash('synopsis', $request->synopsis);
+        Session::flash('categories', $request->categories);
+        Session::flash('image_cover', $request->image_cover);
+
         $request->validate([
             'title' => 'required',
             'author' => 'required',
@@ -61,6 +69,19 @@ class BookController extends Controller
             'categories' => 'required|array|min:1',
             'categories.*' => 'exists:categories,id',
             'image_cover' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ],[
+            'title.required' => 'Title cannot be empty!',
+            'author.required' => 'Author cannot be empty!',
+            'year.required' => 'Year cannot be empty!',
+            'year.numeric' => 'Year must be numeric!',
+            'stock.required' => 'Stock cannot be empty!',
+            'stock.numeric' => 'Stock must be numeric!',
+            'synopsis.string' => 'Stock must be character!',
+            'categories.required' => 'Please select at least one category!',
+            'categories.array' => 'Invalid categories format!',
+            'categories.min' => 'Please select at least one category!',
+            'categories.*.exists' => 'Selected category does not exist!',
+            'image_cover.required' => 'Please upload a cover image!',
         ]);
 
 
@@ -108,6 +129,14 @@ class BookController extends Controller
      */
     public function update(Request $request, Book $book)
     {
+        Session::flash('title', $request->title);
+        Session::flash('author', $request->author);
+        Session::flash('year', $request->year);
+        Session::flash('stock', $request->stock);
+        Session::flash('synopsis', $request->synopsis);
+        Session::flash('categories', $request->categories);
+        Session::flash('image_cover', $request->image_cover);
+
         $request->validate([
             'title' => 'required',
             'author' => 'required',
@@ -117,6 +146,19 @@ class BookController extends Controller
             'categories' => 'required|array|min:1',
             'categories.*' => 'exists:categories,id',
             'image_cover' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ],[
+            'title.required' => 'Title cannot be empty!',
+            'author.required' => 'Author cannot be empty!',
+            'year.required' => 'Year cannot be empty!',
+            'year.numeric' => 'Year must be numeric!',
+            'stock.required' => 'Stock cannot be empty!',
+            'stock.numeric' => 'Stock must be numeric!',
+            'synopsis.string' => 'Stock must be character!',
+            'categories.required' => 'Please select at least one category!',
+            'categories.array' => 'Invalid categories format!',
+            'categories.min' => 'Please select at least one category!',
+            'categories.*.exists' => 'Selected category does not exist!',
+            'image_cover.required' => 'Please upload a cover image!',
         ]);
 
         $data = $request->all();

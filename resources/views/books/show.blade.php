@@ -7,6 +7,8 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" integrity="sha384-tViUnnbYAV00FLIhhi3v/dWt3Jxw4gZQcNoSCxCIFNJVCx7/D55/wXsrNIRANwdD" crossorigin="anonymous">
+
     <link rel="stylesheet" href="{{ asset('css/admin/detail_book.css') }}">
 </head>
 <body>
@@ -14,7 +16,7 @@
     <nav>
         <div class="nav-container">
             <div class="logo">
-                📚 <span>Library Hub</span>
+                <i class="bi-bi-book"></i> <span>Library Hub</span>
             </div>
 
             <!-- User Dropdown -->
@@ -120,7 +122,7 @@
                     <a href="{{ route('books.edit', $book) }}" class="btn btn-primary w-100 mb-2">
                         Edit Book
                     </a>
-                   
+
 
                 </div>
                 <div class="container">
