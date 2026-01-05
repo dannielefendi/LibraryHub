@@ -1,48 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add New Book - Library Hub</title>
-
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <link rel="stylesheet" href="{{ asset('css/admin/create_book.css') }}">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" integrity="sha384-tViUnnbYAV00FLIhhi3v/dWt3Jxw4gZQcNoSCxCIFNJVCx7/D55/wXsrNIRANwdD" crossorigin="anonymous">
-
-
-</head>
-<body>
-    <!-- Navigation -->
-    <nav>
-        <div class="nav-container">
-            <div class="logo">
-                <i class="bi bi-book"></i> <span>Library Hub</span>
-            </div>
-
-            <!-- User Dropdown -->
-            <div class="user-menu" x-data="{ open: false }">
-                <button @click="open = !open" class="user-button">
-                    <span>{{ Auth::user()->name }}</span>
-                    <span class="arrow" :class="{ 'rotate': open }">▼</span>
-                </button>
-
-                <div x-show="open"
-                     @click.away="open = false"
-                     x-transition
-                     class="dropdown">
-                    <a href="{{ route('profile.edit') }}">Profile</a>
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <button type="submit">Log Out</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Main Content -->
-    <main>
+<x-app-layout>
+    @push('styles')
+        <link rel="stylesheet" href="{{ asset('css/admin/create_book.css') }}">
+    @endpush
+        
         <!-- @include('components.notif-validate') -->
         <!-- Page Header -->
         <div class="page-header">
@@ -161,7 +121,4 @@
                 </div>
             </form>
         </div>
-    </main>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+</x-app-layout>
