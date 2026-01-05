@@ -1,9 +1,9 @@
 <x-app-layout>
     <div class="overflow-hidden rounded-3xl bg-white shadow-xl">
 
-        <div class="bg-gradient-to-r from-sky-600 to-cyan-500 p-6 text-black">
+        <div class="bg-gradient-to-r from-sky-600 to-cyan-500 p-6 text-white">
             <h1 class="fs-2 fw-bold">
-                👋🏻 Hi, {{ Auth::user()->name }}
+                Hi, {{ Auth::user()->name }}
             </h1>
             <p class="mb-0">Here are the books you have borrowed:</p>
         </div>
@@ -14,7 +14,7 @@
             <div class="row">
                 @foreach ($borrowings as $borrow)
                     <div class="col-md-3 mb-4">
-                        <div class="card h-100 shadow-sm rounded-3">
+                        <div cgilass="card h-100 shadow-sm rounded-3">
                             <div class="card-body d-flex flex-column mt-4">
                                 <h5 class="fs-4 fw-semibold text-gray-800 mb-4">{{ $borrow->book->title }}</h5>
                                 <p class="text-sm text-muted">
