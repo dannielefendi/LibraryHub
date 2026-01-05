@@ -17,7 +17,7 @@ class BookController extends Controller
     {
         //
         $books = Book::with('categories')
-            ->paginate(15);
+            ->paginate(5);
 
       
         $totalBooks = Book::count();

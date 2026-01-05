@@ -3,7 +3,7 @@
         <div class="row mb-10">
             <div class="col-12">
                 <div class="overflow-hidden rounded-3xl bg-white shadow-xl">
-                <div class="bg-gradient-to-r from-sky-600 to-cyan-500 p-6 text-black">
+                <div class="bg-gradient-to-r from-sky-600 to-cyan-500 p-6 text-white">
                         <h1 class="fs-2 fw-bold">
                               Hi, {{ Auth::user()->name }}
                         </h1>
