@@ -6,7 +6,7 @@
         <!-- @include('components.notif-validate') -->
         <!-- Page Header -->
         <div class="page-header">
-            <h1><i class="bi bi-plus-lg"></i> Add New Book</h1>
+            <h1><i class="bi bi-plus-lg"></i> Add <span class="text-blue-700">New Book</span></h1>
         </div>
 
         <!-- Form Container -->
