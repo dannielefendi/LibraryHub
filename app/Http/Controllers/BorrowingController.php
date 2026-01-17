@@ -27,7 +27,7 @@ class BorrowingController extends Controller
             ->when($request->categories, function($query, $categories) {
                 $query->whereHas('categories', function($q) use ($categories) {
                     $q->whereIn('categories.id', $categories); // <- ganti where jadi whereIn
-                });
+                },'=',  count($categories));
             })
 
             ->when($request->search, function($query, $search) {
